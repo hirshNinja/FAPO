@@ -1,0 +1,348 @@
+# P-ROC Game Description file for Funhouse
+
+PRGame:
+    machineType: wpcAlphanumeric
+    numBalls: 3
+PRFlippers:
+    - flipperLwR
+    - flipperLwL
+
+PRBumpers:
+    - slingL
+    - slingR 
+    - lowerJetBumper
+    - upperRightJetBumper
+    - upperLeftJetBumper 
+
+PRSwitches:
+    coinL:
+        number: SD1
+        label: 'CoinLeft'
+    coinC:
+        number: SD2
+        label: 'CoinCenter'
+    coinR:
+        number: SD3
+        label: 'CoinRight'
+    coin4:
+        number: SD4
+        label: 'CoinDoor4'
+    escape:
+        number: SD5
+        label: 'Diag Escape'
+    down:
+        number: SD6
+        label: 'Diag Down'
+    up:
+        number: SD7
+        label: 'Diag Up'
+    enter:
+        number: SD8
+        label: 'Diag Enter'
+
+    #matrix
+    #col1
+    flipperLwR:
+        number: S11
+        label: 'Left Flipper'
+    flipperLwL:
+        number: S12
+        label: 'Right Flipper'
+    startButton:
+        number: S13
+        label: 'Start Button'
+    tilt:
+        number: S14
+        label: 'Plumb Bob Tilt'
+    stepsLightFrenzy:
+        number: S15
+        label: 'Steps Light Frenzy'
+    upperRampSwitch:
+        number: S16
+        label: 'Upper Ramp Switch'
+    stepS:
+        number: S17
+        label: 'Step S'
+    upperLeftJetBumper:
+        number: S18
+        label: 'Upper Left Jet Bumper'
+    #col2
+    slamTilt:
+        number: S21
+        label: 'Slam Tilt'
+    frontDoor:
+        number: S22
+        tags: frontDoor
+        label: 'Front Door'
+    testPosition:
+        number: S24
+        tags: testPosition
+        label: 'Test Position'
+    lockMechRight:
+        number: S25
+        tags: lockMechRight
+        label: 'Lock Mech Right'
+    stepsLightExtraBall:
+        number: S26
+        tags: StepsLightEB, ExtraBall
+    lockMechCenter:
+        number: S27
+        tags: lockMechCenter
+        label: 'Lock Mech Center'
+    lockMechLeft:
+        number: S28
+        tags: lockMechLeft
+        label: 'Lock Mech Left'
+    #col3
+    stepP:
+        number: S31
+        tags: stepP
+        label: 'Step P'
+    topSuperdogStandupTarget:
+        number: S32
+        tags: superdog
+        label: 'Top Superdog Target'
+    upperLeftGangwayRollunder:
+        number: S33
+        tags: leftGangway
+        label: 'Upper Left Gangway Rollunder'
+    bottomSuperdogStandupTarget:
+        number: S34
+        tags: superdog
+        label: 'Bottom Superdog Target'
+    stepsTrackLower:
+        number: S35
+        tags: stepsTrackLower
+        label: 'Steps Track Lower'
+    steps500000:
+        number: S36
+        label: 'Steps 500,000'
+    centerSuperdogStandupTarget:
+        number: S37
+        tags: superdog
+        label: 'Center Superdog Target'
+    stepsTrackUpper:
+        number: S38
+        tags: steps
+        label: 'Steps Track Upper'
+    #col4
+    slingL:
+        number: S41
+        tags: slingshot, ballAlive
+        label: 'Left Slingshot'
+    leftFlipperReturnLane:
+        number: S42
+        tags: return, ballAlive
+        label: 'Top Single Drop Target'
+    leftOutlane:
+        number: S43
+        tags: outlane
+        label: 'Left Outlane'
+    windTunnelHole:
+        number: S44
+        tags: drop, ballAlive
+        label: 'Wind Tunnel Hole'
+    trapDoor:
+        number: S45
+        tags: drop, trapdoor
+        label: 'Trap Door'
+    rudysHideoutKickbig:
+        number: S46
+        tags: hideout
+        label: 'Rudys Hideout Kickbig'
+    shooterL:
+        number: S47
+        tags: leftBallShooter
+        label: 'Left Ball Shooter'
+    rampExitTrack:
+        number: S48
+        tags: rampexit, ballAlive
+        label: 'Ramp Exit Track'
+#col5
+    dummyJaw:
+        number: S51
+        type: 'NC'
+        label: 'Dummy Jaw'
+    rightOutlane: 
+        number: S52
+        tags: ballLive
+    slingR:
+        number: S53
+        tags: ballLive
+    stepT:
+        number: S54
+        tags: ballLive
+    stepsSuperdog:
+        number: S55
+        type: 'NC'
+        tags: ballLive
+    rampEntrance:
+        number: S56
+        tags: ballLive
+    jetBumperLane:
+        number: S57
+        tags: ballLive
+    tunnelKickout:
+        number: S58
+        tags: ballLive
+
+    #col6
+    rInsideFlprRtrn: 
+        number: S61
+    shooterR: 
+        number: S62
+        tags: ballLive
+    trough1:
+        number: S63
+    stepE:
+        number: S64
+        tags: ballLive
+    dummyEjectHole:
+        number: S65
+    upperRightGangwayLane:
+        number: S66
+        tags: ballLive
+    lowerRightDropHole:
+        number: S67
+        tags: ballLive
+    lowerJetBumper:
+        number: S68
+        tags: ballLive
+
+    #col 7
+
+    rOutsideFlprRtrn:
+        number: S71
+    trough3:
+        number: S72
+    outhole:
+        number: S73
+    trough2:
+        number: S74
+    upperRightLoop:
+        number: S75
+        tags: ballLive
+    trapDoorClosed:
+        number: S76
+    upperRightJetBumper:
+        number: S77
+        
+PRCoils:
+    flipperLwRMain: 
+        number: FLRM
+    flipperLwLMain: 
+        number: FLLM
+    flipperRelay:
+        number: G08 
+    outhole:
+        number: C01
+        pulseTime: 30
+        label: 'Outhole'
+        tags: 'C01'
+    rampDiverter:
+        number: C02
+        pulseTime: 30
+        label: 'Ramp Diverter'
+    kickbig:
+        number: C03
+        pulseTime: 30
+        label: 'Kickbig'
+    tunnelKickbig:
+        number: C04
+        pulseTime: 30
+        label: 'Tunnel Kickbig'
+    trapDoorOpen:
+        number: C05
+        pulseTime: 30
+        label: 'Trap Door Open'
+    trapDoorClose:
+        number: C06
+        pulseTime: 30
+        label: 'Trap Door Close'
+    knocker:
+        number: C07
+        pulseTime: 30
+        label: 'Knocker'
+    multiballRelease:
+        number: C08
+        pulseTime: 30
+        label: 'Multiball Release'
+    upperLeftJetBumper:
+        number: C09
+        pulseTime: 30
+        label: 'Upper Left Jet Bumper'
+    upperRightJetBumper:
+        number: C10
+        pulseTime: 30
+        label: 'Upper Right Jet Bumper'
+    lowerJetBumper:
+        number: C11
+        pulseTime: 30
+        label: 'Lower Jet Bumper'
+    slingL:
+        number: C12
+        pulseTime: 30
+        label: 'Left Slingshot'
+    slingR: 
+        number: C13
+        pulseTime: 30
+        label: 'Right Slingshot'
+    stepsGate: 
+        number: C14
+        pulseTime: 30
+        label: 'Steps Gate'
+    trough:
+        number: C15
+    dummyEjectHole:
+        number: C16
+        pulseTime: 30
+        label: 'Dummy Eject Hole'
+    blueFlashers:
+        number: C17
+        pulseTime: 30
+        label: 'Blue Flashers'
+    dummyFlasher:
+        number: C18
+        pulseTime: 30
+        label: 'Dummy Flasher'
+    clockFlashers:
+        number: C19
+        pulseTime: 30
+        label: 'Clock Flashers'
+    superdogs:
+        number: C20
+        pulseTime: 30
+        label: 'Superdogs'
+    mouthMotor:
+        number: C21
+        pulseTime: 200
+        label: 'Mouth Motor'
+    upDownDriver:
+        number: C22
+        pulseTime: 30
+        label: 'Up/Down Driver'
+    redFlashers:
+        number: C23
+        pulseTime: 30
+        label: 'Red Flashers'
+    clearFlashers:
+        number: C24
+        pulseTime: 30
+        label: 'Clear Flashers'
+    eyesRight:
+        number: C25
+        pulseTime: 30
+        label: 'Eyes Right'
+    eyelidsOpen:
+        number: C26
+        pulseTime: 30
+        label: 'Eyelids Open'
+    eyelidsClosed:
+        number: C27
+        pulseTime: 30
+        label: 'Eyelids Closed'
+    eyesLeft:
+        number: C28
+        pulseTime: 30
+        label: 'Eyes Left'
+   
