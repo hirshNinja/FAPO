@@ -30,7 +30,7 @@ class FapoGame(procgame.game.GameController):
     for sw in self.switches: 
       eventType = 'active'
       if sw.name == "shooterR":
-        eventType = 'deactive'
+        eventType = 'inactive'
       self.basic_mode.add_switch_handler(name=sw.name, event_type=eventType, delay=0, handler=self.fireMidi)
 
   def fireMidi (self, sw):
