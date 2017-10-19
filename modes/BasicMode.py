@@ -7,11 +7,17 @@ class BasicMode(procgame.game.Mode):
     self.openCrazySteps = False
 
   def mode_started(self):
+    self.game.alpha_display.display(["     WELCOME    ", "      HOME      "])
+    self.game.start_game()
+    self.game.add_player()
+    self.game.start_ball()
+    self.game.flippersOn()
     return
 
+### RESET GAME/MODE ###
   def sw_startButton_active(self, sw):
-    self.game.coils.trough.pulse()
-    self.game.flippersOn()
+    # self.game.troughController.launch_balls(1)
+    # self.game.flippersOn()
     return procgame.game.SwitchContinue
 
   def sw_lockMechLeft_active_for_1000ms(self, sw):
@@ -26,9 +32,9 @@ class BasicMode(procgame.game.Mode):
     self.game.coils.tunnelKickbig.pulse()
     return procgame.game.SwitchContinue
 
-  def sw_outhole_active_for_100ms(self, sw):
-    self.game.resetSolenoids()
-    return procgame.game.SwitchContinue
+  # def sw_outhole_active_for_100ms(self, sw):
+  #   self.game.resetSolenoids()
+  #   return procgame.game.SwitchContinue
 
   def sw_dummyJaw_active(self, sw):
     self.game.rudyMouthOpen()

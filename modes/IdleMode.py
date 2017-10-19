@@ -11,10 +11,6 @@ class IdleMode(procgame.game.Mode):
     cycle_seconds=0, now=False)
 
   def sw_startButton_active(self, sw):
-    # basic_mode = BasicMode(self)
-    # self.game.modes.add(basic_mode)
-    print 'IDLE START BTN'
-    
     self.game.modes.remove(self)
     return procgame.game.SwitchStop
 
@@ -22,8 +18,11 @@ class IdleMode(procgame.game.Mode):
     if self.game.switches.outhole.state:
       self.game.coils.outhole.pulse()
 
-  def mode_stopped(self):
+  def startBasicMode(self):
     self.game.modes.add(self.game.basic_mode)
     self.game.coils.blueFlashers.pulse()
-    self.game.coils.trough.pulse()
-    self.game.flippersOn()
+
+
+  def mode_stopped(self):
+    self.startBasicMode()
+    
