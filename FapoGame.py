@@ -47,6 +47,7 @@ class FapoGame(procgame.game.GameController):
     self.resetSolenoids()
 
   def resetSolenoids(self):
+    self.enable_flippers(enable=False)
     self.rudyMouthClose()
     self.trapDoorClose()
     self.coils.outhole.pulse()
