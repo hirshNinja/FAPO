@@ -28,7 +28,10 @@ class FapoGame(procgame.game.GameController):
 
   def addSwitchHandlers(self):
     for sw in self.switches: 
-      self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.fireMidi)
+      eventType = 'active'
+      if sw.name == "shooterR":
+        eventType = 'deactive'
+      self.basic_mode.add_switch_handler(name=sw.name, event_type=eventType, delay=0, handler=self.fireMidi)
 
   def fireMidi (self, sw):
     midiNum = int(filter(str.isdigit, sw.yaml_number))
