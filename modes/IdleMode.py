@@ -6,11 +6,12 @@ class IdleMode(procgame.game.Mode):
     super(IdleMode, self).__init__(game=game, priority=4)
 
   def mode_started(self):
-    # self.game.coils.blueFlashers.pulsed_patter(30,127,0)
+    # blink stuff
+    # self.game.scoredisplay.set_text("Press",0) 
+    # self.game.scoredisplay.set_text("Press Start",0,blink_rate=0.5, seconds=0.5)
+    # self.game.scoredisplay.set_text("Start",1,blink_rate=0.1, seconds=0.1)
+
     self.game.alpha_display.display(["     PRESS      ", "     START      "])
-
-
-
     self.game.coils.blueFlashers.schedule(schedule=0xa10340,
     cycle_seconds=0, now=False)
 
@@ -28,5 +29,6 @@ class IdleMode(procgame.game.Mode):
 
 
   def mode_stopped(self):
+    # self.game.scoredisplay.cancel_script() # blink stuff
     self.startBasicMode()
     

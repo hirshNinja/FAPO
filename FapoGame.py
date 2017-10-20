@@ -1,5 +1,6 @@
 import procgame.game
-# from procgame import alphanumeric
+# import scoredisplay # blink idea
+from procgame import alphanumeric
 import alphanumeric2
 import auxport2
 from procgame.modes import trough
@@ -37,7 +38,8 @@ class FapoGame(procgame.game.GameController):
     self.addSwitchHandlers()
     self.aux_port = auxport2.AuxPort(self)
     self.alpha_display = alphanumeric2.AlphanumericDisplay(self.aux_port)
-
+    # self.scoredisplay = scoredisplay.AlphaScoreDisplay(self,4) # blink text
+    
   def addSwitchHandlers(self):
     for sw in self.switches: 
       self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.fireMidiActive)
