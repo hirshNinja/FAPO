@@ -346,6 +346,20 @@ PRCoils:
         pulseTime: 30
         label: 'Eyes Left'
 
+# GENERAL ILLUMINATION    
+
+    upperBackglass:
+        number: G01
+    lowerBackglass: # also rudy light
+        number: G02
+
+    rearPlayfield:
+        number: G03
+    centerBackglass:
+        number: G04
+    frontPlayfield:
+        number: G05  
+
 
 PRLamps:
     #col1
@@ -564,6 +578,7 @@ PRBallSave:
         shooterR: closed
         #flipperLwL: closed
         #flipperLwR: closed
+
 
 PRDriverGlobals:
     lamp_matrix_strobe_time: 200

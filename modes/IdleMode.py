@@ -12,8 +12,8 @@ class IdleMode(procgame.game.Mode):
     # self.game.scoredisplay.set_text("Start",1,blink_rate=0.1, seconds=0.1)
 
     self.game.alpha_display.display(["     PRESS      ", "     START      "])
-    self.game.coils.blueFlashers.schedule(schedule=0xa10340,
-    cycle_seconds=0, now=False)
+    self.game.lampctrl.play_show('attract', repeat=True)
+    # self.game.coils.blueFlashers.schedule(schedule=0xa10340, cycle_seconds=0, now=False)
 
   def sw_startButton_active(self, sw):
     self.game.modes.remove(self)

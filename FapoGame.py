@@ -1,6 +1,7 @@
 import procgame.game
 # import scoredisplay # blink idea
 from procgame import alphanumeric
+import procgame.lamps
 import alphanumeric2
 import auxport2
 from procgame.modes import trough
@@ -39,6 +40,8 @@ class FapoGame(procgame.game.GameController):
     self.aux_port = auxport2.AuxPort(self)
     self.alpha_display = alphanumeric2.AlphanumericDisplay(self.aux_port)
     # self.scoredisplay = scoredisplay.AlphaScoreDisplay(self,4) # blink text
+    self.lampctrl = procgame.lamps.LampController(self)
+    self.lampctrl.register_show('attract', 'lamps/attract.lampshow')
     
   def addSwitchHandlers(self):
     for sw in self.switches: 
