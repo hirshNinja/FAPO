@@ -1,6 +1,7 @@
 import procgame.game
-from procgame import alphanumeric
-from procgame import auxport
+# from procgame import alphanumeric
+import alphanumeric2
+import auxport2
 from procgame.modes import trough
 
 import pinproc
@@ -16,7 +17,7 @@ class FapoGame(procgame.game.GameController):
   def __init__(self, machine_type):
     super(FapoGame, self).__init__(machine_type)
     self.gameConfig = GameConfig.GameConfig()
-    
+    self.ball_start_time = 0
     self.midiMap = None
     if self.gameConfig.inputKeyboardTest:
       self.midiMap = self.gameConfig.midiKeyboardMap
@@ -34,9 +35,9 @@ class FapoGame(procgame.game.GameController):
     self.midi_out = rtmidi.MidiOut()
     self.midi_out.open_port(self.gameConfig.outputChSwitches)
     self.addSwitchHandlers()
-    self.aux_port = procgame.auxport.AuxPort(self)
-    self.alpha_display = procgame.alphanumeric.AlphanumericDisplay(self.aux_port)
-    self.alpha_display.display(["     Hello      ", "     World      "])
+    self.aux_port = auxport2.AuxPort(self)
+    self.alpha_display = alphanumeric2.AlphanumericDisplay(self.aux_port)
+    
 
   def addSwitchHandlers(self):
     for sw in self.switches: 
@@ -45,7 +46,6 @@ class FapoGame(procgame.game.GameController):
 
 
   def tick(self):
-    print self.players
     # added to mode_stopped in idlemode
     message, delta_time = self.midi_in.get_message()
     if message and message[0] == 144:
@@ -84,19 +84,25 @@ class FapoGame(procgame.game.GameController):
     self.midi_out.send_message([0x91, midiNum, 100]) # Note on
     # midi_out.send_message([0x80, midiNum, 0]) # Note off
 
+  def updateBallDisplay(self):
+    self.alpha_display.display(["      PLAY      ", "   Ball " + str(self.ball) + " of " + str(self.balls_per_game) + "  "])
 
   def ballDrained(self):
-    # Check to see if ball is in right shooter to determine false positive
-    self.end_ball() # should call start ball inside
-    self.alpha_display.display(["      FAIL      ", "   Ball " + self.ball + " of " + self.balls_per_game + "  "])
-    print "BALL DRAINED"
+    # Check to see if ball is in play to determine false positive
+    if not self.trough_mode.num_balls_in_play:
+      self.end_ball()
+      print "BALL DRAINED"
+      if self.ball > 0:
+        self.updateBallDisplay()
+      
 
   def game_ended(self):
+    print "GAME OVER!"
     self.alpha_display.display(["      GAME      ", "      OVER      "])
-    self.reset()
+    self.basic_mode.delay(name=None, event_type=None, delay=5, handler=self.reset, param=None)
 
   def ball_starting(self):
-    self.game.trough_mode.launch_balls(1)
+    self.trough_mode.launch_balls(1)
 
   def flippersOn(self):
     self.enable_flippers(enable=True)

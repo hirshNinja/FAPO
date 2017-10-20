@@ -1,16 +1,19 @@
 import procgame.game
+import time
 
 class BasicMode(procgame.game.Mode):
   def __init__(self, game):
     super(BasicMode, self).__init__(game=game, priority=5)
-    self.ballInMouth = False
-    self.openCrazySteps = False
+
 
   def mode_started(self):
-    self.game.alpha_display.display(["     WELCOME    ", "      HOME      "])
+    self.ballInMouth = False
+    self.openCrazySteps = False
     self.game.start_game()
-    self.game.add_player()
     self.game.start_ball()
+    self.game.ball_start_time = time.time()
+    self.game.add_player()
+    self.game.updateBallDisplay()
     self.game.flippersOn()
     return
 
@@ -32,9 +35,9 @@ class BasicMode(procgame.game.Mode):
     self.game.coils.tunnelKickbig.pulse()
     return procgame.game.SwitchContinue
 
-  # def sw_outhole_active_for_100ms(self, sw):
-  #   self.game.resetSolenoids()
-  #   return procgame.game.SwitchContinue
+  def sw_outhole_active_for_100ms(self, sw):
+    self.game.coils.outhole.pulse()
+    return procgame.game.SwitchContinue
 
   def sw_dummyJaw_active(self, sw):
     self.game.rudyMouthOpen()
@@ -74,7 +77,8 @@ class BasicMode(procgame.game.Mode):
     return procgame.game.SwitchStop
 
   def sw_shooterL_active(self, sw):
-    self.game.modes.remove(self)
+    for mode in self.game.modes:
+      print mode
     self.game.modes.add(self.game.steps_mode)
     return procgame.game.SwitchContinue
 

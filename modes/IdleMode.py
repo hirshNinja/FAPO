@@ -3,10 +3,14 @@ from BasicMode import BasicMode
 
 class IdleMode(procgame.game.Mode):
   def __init__(self, game):
-    super(IdleMode, self).__init__(game=game, priority=5)
+    super(IdleMode, self).__init__(game=game, priority=4)
 
   def mode_started(self):
     # self.game.coils.blueFlashers.pulsed_patter(30,127,0)
+    self.game.alpha_display.display(["     PRESS      ", "     START      "])
+
+
+
     self.game.coils.blueFlashers.schedule(schedule=0xa10340,
     cycle_seconds=0, now=False)
 
