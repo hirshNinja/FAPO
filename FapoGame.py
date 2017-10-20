@@ -37,7 +37,6 @@ class FapoGame(procgame.game.GameController):
     self.addSwitchHandlers()
     self.aux_port = auxport2.AuxPort(self)
     self.alpha_display = alphanumeric2.AlphanumericDisplay(self.aux_port)
-    
 
   def addSwitchHandlers(self):
     for sw in self.switches: 
@@ -76,6 +75,7 @@ class FapoGame(procgame.game.GameController):
   def fireMidiActive (self, sw):
     midiNum = int(filter(str.isdigit, sw.yaml_number))
     print sw.name, midiNum
+    
     self.midi_out.send_message([0x90, midiNum, 100]) # Note on
     # midi_out.send_message([0x80, midiNum, 0]) # Note off
 

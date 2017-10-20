@@ -345,4 +345,227 @@ PRCoils:
         number: C28
         pulseTime: 30
         label: 'Eyes Left'
-   
+
+
+PRLamps:
+    #col1
+    gangway75000:
+        number: L11
+        label: 'Gangway 75,000'
+    gangway100000:
+        number: L12
+        label: 'Gangway 100,000'
+    gangway150000:
+        number: L13
+        label: 'Gangway 150,000'
+    gangway200000:
+        number: L14
+        label: 'Gangway 200,000'
+    gangway250000:
+        number: L15
+        label: 'Gangway 250,000'
+    gangwayLightsEB:
+        number: L16
+        label: 'Gangway Lights Extra Ball'
+    shootAgain:
+        number: L17
+        label: 'Shoot Again'
+    stepsOpen:
+        number: L18
+        label: 'Steps Open'
+    clock45Minutes:
+        number: L21
+        label: 'Clock 45 Minutes'
+    clock8oClock:
+        number: L22
+        label: 'Clock 8 oClock'
+    clock6oClock:
+        number: L23
+        label: 'Clock 6 oClock'
+    clock25Minutes:
+        number: L24
+        label: 'Clock 25 Minutes'
+    clock15Minutes:
+        number: L25
+        label: 'Clock 15 Minutes'
+    clock10Minutes:
+        number: L26
+        label: 'Clock 10 Minutes'
+    clock12Minutes:
+        number: L27
+        label: 'Clock 12 Minutes'
+    clock0Minutes:
+        number: L28
+        label: 'Clock 0 Minutes'
+    clock40Minutes:
+        number: L31
+        label: 'Clock 40 Minutes'
+    clock35Minutes:
+        number: L32
+        label: 'Clock 35 minutes'
+    clock30Minutes:
+        number: L33
+        label: 'Clock 30 Minutes'
+    clock20Minutes:
+        number: L34
+        label: 'Clock 20 Minutes'
+    clock3oClock:
+        number: L35
+        label: 'Clock 3 oClock'
+    clock1oClock:
+        number: L36
+        label: 'Clock 1 oClock'
+    clock11oClock:
+        number: L37
+        label: 'Clock 11 oClock'
+    clock50Minutes:
+        number: L38
+        label: 'Clock 50 Minutes'
+    clock9oClock:
+        number: L41
+        label: 'Clock 9 oClock'
+    clock7oClock:
+        number: L42
+        label: 'Clock 7 oClock'
+    clock5oClock:
+        number: L43
+        label: 'Clock 5 oClock'
+    clock4oClock:
+        number: L44
+        label: 'Clock 4 oClock'
+    clock2oClock:
+        number: L45
+        label: 'Clock 2 oClock'
+    clock5Minutes:
+        number: L46
+        label: 'Clock 5 Minutes'
+    clock55Minutes:
+        number: L47
+        label: 'Clock 55 Minutes'
+    clock10oClock:
+        number: L48
+        label: 'Clock 10 oClock'
+    lowerLeftJetBumper:
+        number: L51
+        label: 'Lower Left Jet Bumper'
+    upperLeftJetBumper:
+        number: L52
+        label: 'Upper Left Jet Bumper'
+    superdogLamp:
+        number: L53
+        label: 'Superdog Lamp'
+    stepsLightsFrenzy:
+        number: L54
+        label: 'Steps Light Frenzy'
+    stepsLightsEB:
+        number: L55
+        label: 'Steps Light Extra Ball'
+    steps500000:
+        number: L56
+        label: 'Steps 500,000'
+    rampOverheadLamp:
+        number: L57
+        label: 'Ramp Overhead Lamp'
+    rightGangwayOverheadLamp:
+        number: L58
+        label: 'Right Gangway Overhead Lamp'
+    leftAndInsideRightFlipperLanes:
+        number: L61
+        label: 'Left and Inside Right Flipper Lanes'
+    stepS:
+        number: L62
+        label: 'Step S'
+    trapDoorBonus:
+        number: L63
+        label: 'Trap Door Bonus'
+    rampScores250000:
+        number: L64
+        label: 'Ramp Scores 250,000'
+    stepT:
+        number: L65
+        label: 'Step T'
+    upperLeftGangwayLane:
+        number: L66
+        label: 'Upper Left Gangway Lane'
+    extraBallLamp:
+        number: L67
+        label: 'Extra Ball Lamp'
+    lock:
+        number: L68
+        label: 'Lock'
+    magicMirrorLightsEB:
+        number: L71
+        label: 'Magic Mirror Lights Extra Ball'
+    upperRightJetBumper:
+        number: L72
+        label: 'Upper Right Jet Bumper'
+    stepP:
+        number: L73
+        label: 'Step P'
+    magicMirrorLightsMillion:
+        number: L74
+        label: 'Magic Mirror Lights Million'
+    magicMirrorLightsJetBumpers:
+        number: L75
+        label: 'Magic Mirror Lights Jet Bumpers'
+    magicMirrorLightsSuperdog:
+        number: L76
+        label: 'Magic Mirror Lights Superdog'
+    magicMirrorOpensGate:
+        number: L77
+        label: 'Magic Mirror Opens Gate'
+    magicMirrorLightsQuickMB:
+        number: L78
+        label: 'Magic Mirror Lights Quick Multiball'
+    millionPlus:
+        number: L81
+        label: 'Million Plus'
+    specialOutlanes:
+        number: L82
+        label: 'Special Outlanes'
+    trapDoorFrenzy:
+        number: L83
+        label: 'Trap Door Frenzy'
+    rampStepsLamp:
+        number: L84
+        label: 'Ramp Steps Lamp'
+    magicMirrorArrow:
+        number: L85
+        label: 'Magic Mirror Arrow'
+    stepE:
+        number: L86
+        label: 'Step E'
+    million:
+        number: L87
+        label: 'Million'
+    startButton:
+        number: L88
+        label: 'Start'
+        
+PRBallSave:
+    pulseCoils: [slingL, slingR, upperLeftJetBumper, upperRightJetBumper, lowerJetBumper, dummyEjectHole, kickbig, tunnelKickbig, knocker, multiballRelease]
+    resetSwitches:
+        slingL: open
+        slingR: open
+        lowerJetBumper: open
+        upperLeftJetBumper: open
+        upperRightJetBumper: open
+        #leftOutlane: open
+        #leftAndInsideRightFlipperLanes: open
+        #rightOutlane: open
+        #rInsideFlprRtrn: open
+        #rOutsideFlprRtrn: open
+        #rightCellar: open
+        #rightRampMadeTop: open
+        #spinner: open
+    stopSwitches:
+        #leftCellar: closed
+        outhole: closed
+        shooterR: closed
+        #flipperLwL: closed
+        #flipperLwR: closed
+
+PRDriverGlobals:
+    lamp_matrix_strobe_time: 200
+    use_watchdog: True
+    watchdog_time: 1000
