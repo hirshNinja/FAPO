@@ -352,7 +352,6 @@ PRCoils:
         number: G01
     lowerBackglass: # also rudy light
         number: G02
-
     rearPlayfield:
         number: G03
     centerBackglass:
@@ -459,7 +458,7 @@ PRLamps:
     clock10oClock:
         number: L48
         label: 'Clock 10 oClock'
-    lowerLeftJetBumper:
+    lowerJetBumper:
         number: L51
         label: 'Lower Left Jet Bumper'
     upperLeftJetBumper:

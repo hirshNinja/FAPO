@@ -1,5 +1,5 @@
 import procgame.game
-# import scoredisplay # blink idea
+import scoredisplay # blink idea
 from procgame import alphanumeric
 import procgame.lamps
 import alphanumeric2
@@ -26,22 +26,35 @@ class FapoGame(procgame.game.GameController):
     else:
       print 'ERROR DEFINE MAX MAP'
     self.load_config('config/funhouse.yaml')
+
+
+    ### ALPHANUMERIC DISPLAY ###
+    self.aux_port = auxport2.AuxPort(self)
+    self.alpha_display = alphanumeric2.AlphanumericDisplay(self.aux_port)
+    # self.scoredisplay = scoredisplay.AlphaScoreDisplay(self,4) # blink text
+
+    ### MODES ###
     self.basic_mode = BasicMode.BasicMode(game=self)
     self.idle_mode = IdleMode.IdleMode(game=self)
     self.steps_mode = StepsMode.StepsMode(game=self)
+    self.alpha_mode = scoredisplay.AlphaScoreDisplay(game=self,priority=5)
     self.trough_mode = procgame.modes.trough.Trough(self,
       ["trough1", "trough2", "trough3"], "trough1", "trough",
        [], "shooterR", self.ballDrained)
+
+    ### MIDI HANDLING ###
     self.midi_in = rtmidi.MidiIn()
     self.midi_in.open_port(self.gameConfig.inputMidiChSolendoids)
     self.midi_out = rtmidi.MidiOut()
     self.midi_out.open_port(self.gameConfig.outputChSwitches)
     self.addSwitchHandlers()
-    self.aux_port = auxport2.AuxPort(self)
-    self.alpha_display = alphanumeric2.AlphanumericDisplay(self.aux_port)
-    # self.scoredisplay = scoredisplay.AlphaScoreDisplay(self,4) # blink text
+
+    ### LAMP SHOWS ###
     self.lampctrl = procgame.lamps.LampController(self)
     self.lampctrl.register_show('attract', 'lamps/attract.lampshow')
+    self.lampctrl.register_show('start', 'lamps/start.lampshow')
+    self.lampctrl.register_show('trapdoorOpen', 'lamps/trapdoorOpen.lampshow')
+
     
   def addSwitchHandlers(self):
     for sw in self.switches: 
@@ -58,8 +71,9 @@ class FapoGame(procgame.game.GameController):
 
   def reset(self):
     super(FapoGame, self).reset()
-    self.modes.add(self.idle_mode)
+    self.modes.add(self.alpha_mode)
     self.modes.add(self.trough_mode)
+    self.modes.add(self.idle_mode)
     self.resetSolenoids()
 
   def resetSolenoids(self):
@@ -107,6 +121,7 @@ class FapoGame(procgame.game.GameController):
     self.basic_mode.delay(name=None, event_type=None, delay=5, handler=self.reset, param=None)
 
   def ball_starting(self):
+    self.lampctrl.play_show('start', repeat=True)
     self.trough_mode.launch_balls(1)
 
   def flippersOn(self):
@@ -120,10 +135,16 @@ class FapoGame(procgame.game.GameController):
     cycle_seconds=1, now=True)
     self.coils.stepsGate.schedule(schedule=0xffffffff,
     cycle_seconds=4, now=True)
+    self.lamps.stepsOpen.schedule(schedule=0xffffffff,
+    cycle_seconds=4, now=True)
+    self.lamps.rampStepsLamp.schedule(schedule=0xffffffff,
+    cycle_seconds=4, now=True)
 
   def crazyStepsClose(self):
     self.coils.rampDiverter.pulse(1)
     self.coils.stepsGate.pulse(1)
+    self.lamps.stepsOpen.pulse()
+    self.lamps.rampStepsLamp.pulse()
 
   def rudyMouthOpen(self):
     self.coils.upDownDriver.enable()
@@ -135,11 +156,17 @@ class FapoGame(procgame.game.GameController):
 
   def trapDoorOpen(self):
     if self.switches.trapDoorClosed.state:
+      self.lamps.trapDoorBonus.schedule(schedule=0xffffffff,
+    cycle_seconds=0, now=True)
       self.coils.trapDoorOpen.pulse()
+      self.lampctrl.play_show('trapdoorOpen', repeat=True)
+
 
   def trapDoorClose(self):
     if not self.switches.trapDoorClosed.state:
+      self.lamps.trapDoorBonus.pulse()
       self.coils.trapDoorClose.pulse()
+      self.lampctrl.stop_show()
 
        
 

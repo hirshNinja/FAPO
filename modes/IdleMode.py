@@ -30,5 +30,7 @@ class IdleMode(procgame.game.Mode):
 
   def mode_stopped(self):
     # self.game.scoredisplay.cancel_script() # blink stuff
+    self.game.lampctrl.stop_show()
+
     self.startBasicMode()
     
