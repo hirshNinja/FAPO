@@ -3,8 +3,8 @@
 class GameConfig():
   def __init__(self):
     self.inputKeyboardTest = True
-    self.inputMidiChSolendoids = 1
-    self.inputMidiChLights = 1
+    self.inputMidiChSolendoids = 2
+    self.inputMidiChLamps = 1
     self.outputChSwitches = 0
     self.midiKeyboardMap = {
       48 :'C01',

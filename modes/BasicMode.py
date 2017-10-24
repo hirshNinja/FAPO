@@ -29,7 +29,7 @@ class BasicMode(procgame.game.Mode):
     return procgame.game.SwitchContinue
 
   def sw_rudysHideoutKickbig_active_for_100ms(self, sw):
-    self.game.coils.kickbig.pulse()
+    self.game.coils.rudyKickbig.pulse()
     return procgame.game.SwitchContinue
 
   def sw_tunnelKickout_active_for_200ms(self, sw):

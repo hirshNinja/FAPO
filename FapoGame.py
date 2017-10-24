@@ -43,8 +43,10 @@ class FapoGame(procgame.game.GameController):
        [], "shooterR", self.ballDrained)
 
     ### MIDI HANDLING ###
-    self.midi_in = rtmidi.MidiIn()
-    self.midi_in.open_port(self.gameConfig.inputMidiChSolendoids)
+    self.midi_in_sol = rtmidi.MidiIn()
+    self.midi_in_sol.open_port(self.gameConfig.inputMidiChSolendoids)
+    self.midi_in_lamp = rtmidi.MidiIn()
+    self.midi_in_lamp.open_port(self.gameConfig.inputMidiChLamps)
     self.midi_out = rtmidi.MidiOut()
     self.midi_out.open_port(self.gameConfig.outputChSwitches)
     self.addSwitchHandlers()
@@ -55,19 +57,56 @@ class FapoGame(procgame.game.GameController):
     self.lampctrl.register_show('start', 'lamps/start.lampshow')
     self.lampctrl.register_show('trapdoorOpen', 'lamps/trapdoorOpen.lampshow')
 
+    print self.lamps
     
   def addSwitchHandlers(self):
-    for sw in self.switches: 
-      self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.fireMidiActive)
-      self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=self.fireMidiInactive)
+    
+    def fireMidiActive (sw):
+      midiNum = int(filter(str.isdigit, sw.yaml_number))
+      print sw.name, midiNum 
+      self.midi_out.send_message([0x90, midiNum, 100]) # Note on
+      # midi_out.send_message([0x80, midiNum, 0]) # Note off
 
+    def fireMidiInactive (sw):
+      midiNum = int(filter(str.isdigit, sw.yaml_number))
+      self.midi_out.send_message([0x91, midiNum, 100]) # Note on
+      # midi_out.send_message([0x80, midiNum, 0]) # Note off
+
+    for sw in self.switches: 
+      self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=fireMidiActive)
+      self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=fireMidiInactive)
+
+
+  def handleMidiInput(self):
+
+    def handleSolenoidInputMidi(midi):
+      if midi in self.midiMap:
+        yaml_num = self.midiMap[midi]
+        for coil in self.coils:
+          if coil.yaml_number == yaml_num:
+            coil.pulse()
+
+    def handleLampInputMidi(midi):
+      for lamp in self.lamps:
+        if lamp.yaml_number == ('L' + str(midi[1])):
+          if midi[0] == 144:
+            lamp.pulse(0)
+          else:
+            lamp.pulse()
+
+    solenoidMsg, delta_time = self.midi_in_sol.get_message()
+    if solenoidMsg and solenoidMsg[0] == 144:
+      print solenoidMsg, delta_time
+      handleSolenoidInputMidi(solenoidMsg[1])
+
+    lampMsg, delta_time2 = self.midi_in_lamp.get_message()
+    if lampMsg:
+      print "LAMP"
+      print lampMsg, delta_time2
+      handleLampInputMidi(lampMsg)
 
   def tick(self):
-    # added to mode_stopped in idlemode
-    message, delta_time = self.midi_in.get_message()
-    if message and message[0] == 144:
-      print message, delta_time
-      self.handleInputMidi(message[1])
+    self.handleMidiInput()
 
   def reset(self):
     super(FapoGame, self).reset()
@@ -83,25 +122,8 @@ class FapoGame(procgame.game.GameController):
     self.trapDoorClose()
     self.crazyStepsClose()
     self.coils.outhole.pulse()
-
-  def handleInputMidi(self,midi):
-    if midi in self.midiMap:
-      yaml_num = self.midiMap[midi]
-      for coil in self.coils:
-        if coil.yaml_number == yaml_num:
-          coil.pulse()
-
-  def fireMidiActive (self, sw):
-    midiNum = int(filter(str.isdigit, sw.yaml_number))
-    print sw.name, midiNum
-    
-    self.midi_out.send_message([0x90, midiNum, 100]) # Note on
-    # midi_out.send_message([0x80, midiNum, 0]) # Note off
-
-  def fireMidiInactive (self, sw):
-    midiNum = int(filter(str.isdigit, sw.yaml_number))
-    self.midi_out.send_message([0x91, midiNum, 100]) # Note on
-    # midi_out.send_message([0x80, midiNum, 0]) # Note off
+    self.coils.tunnelKickbig.pulse()
+    self.coils.rudyKickbig.pulse()
 
   def updateBallDisplay(self):
     self.alpha_display.display(["      PLAY      ", "   Ball " + str(self.ball) + " of " + str(self.balls_per_game) + "  "])
