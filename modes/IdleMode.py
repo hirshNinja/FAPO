@@ -24,7 +24,7 @@ class IdleMode(procgame.game.Mode):
     if self.game.switches.outhole.state:
       self.game.coils.outhole.pulsed_patter(on_time=30, off_time=50, run_time=1, now=True)
     if self.game.switches.tunnelKickout.state:
-      self.game.coils.tunnelKickbig.pulse().pulsed_patter(on_time=30, off_time=50, run_time=1, now=True)
+      self.game.coils.tunnelKickbig.pulsed_patter(on_time=30, off_time=50, run_time=1, now=True)
 
   def startBasicMode(self):
     self.game.modes.add(self.game.basic_mode)

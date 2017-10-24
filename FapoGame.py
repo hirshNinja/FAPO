@@ -21,10 +21,13 @@ class FapoGame(procgame.game.GameController):
     self.gameConfig = GameConfig.GameConfig()
     self.ball_start_time = 0
     self.midiMap = None
+    self.midiLampMap = None
     if self.gameConfig.inputKeyboardTest:
       self.midiMap = self.gameConfig.midiKeyboardMap
-    else:
-      print 'ERROR DEFINE MAX MAP'
+    self.midiLampMap = None
+    if self.gameConfig.inputLaunchpadTest:
+      self.midiLampMap = self.gameConfig.midiLaunchpadMap
+
     self.load_config('config/funhouse.yaml')
 
 
@@ -87,12 +90,47 @@ class FapoGame(procgame.game.GameController):
             coil.pulse()
 
     def handleLampInputMidi(midi):
-      for lamp in self.lamps:
-        if lamp.yaml_number == ('L' + str(midi[1])):
-          if midi[0] == 144:
-            lamp.pulse(0)
-          else:
-            lamp.pulse()
+      if self.gameConfig.inputLaunchpadTest and midi[1] in self.midiLampMap:
+        handleLaunchpadTest(midi)   
+      else: 
+        for lamp in self.lamps:
+          if lamp.yaml_number == ('L' + str(midi[1])):
+            if midi[0] == 144:
+              lamp.pulse(0)
+            else:
+              lamp.pulse()
+            break
+
+    def handleLaunchpadTest(midi):
+      yaml_num = self.midiLampMap[midi[1]]
+      if yaml_num[0] == 'L':
+        for lamp in self.lamps:
+          if lamp.yaml_number == yaml_num:
+            if self.gameConfig.lampToggle:
+              if midi[2] == 0:
+                print lamp.state()
+                if lamp.state()['state'] == 1 and lamp.state()['outputDriveTime'] != 1:
+                  print 'true'
+                  lamp.disable()
+                else:
+                  print 'false'
+                  lamp.enable()
+            else:
+              if midi[2] == 127:
+                lamp.pulse(0)
+              else:
+                lamp.pulse()
+            break
+      else:
+        for coil in self.coils:
+          if coil.yaml_number == yaml_num:
+            if midi[2] == 127:
+              if yaml_num[0] == 'C':
+                coil.schedule(schedule=0xffffff, cycle_seconds=10, now=True) # limit coils to 4 seconds
+              else:
+                coil.pulse(0)
+            else:
+              coil.pulse()
 
     solenoidMsg, delta_time = self.midi_in_sol.get_message()
     if solenoidMsg and solenoidMsg[0] == 144:
