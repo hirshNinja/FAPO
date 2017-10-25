@@ -8,23 +8,23 @@ Install the P-ROC board into the Williams Funhouse pinball machine. For now, unp
 
 ## Prerequisite Software 
 
-Make sure Python 2.7 in installed on the machine.
+1. Make sure Python 2.7 in installed on the machine.
 
-Also downloading and installing MIDI monitor is very helpful:
+2. Also downloading and installing MIDI monitor is very helpful:
 https://www.snoize.com/MIDIMonitor/
 
-Install the libraries in this guide: 
+3. Install the libraries in this guide: 
  - up to step 13
  - make sure you git clone pyprocgame, not just download the zip!
  - something else to make it work (with one of the cmake's?)
  - http://skeletongame.com/step-1-alternate-manual-installation-for-osxlinux/
   
 
- If using OS X 10.11+, make sure you see the answer to this post about Apple Integrity Protection for errors relating to importing .dylib libraries:
+ 4. If using OS X 10.11+, make sure you see the answer to this post about Apple Integrity Protection for errors relating to importing .dylib libraries:
  https://stackoverflow.com/questions/31343299/mysql-improperly-configured-reason-unsafe-use-of-relative-path
 
 
-Make a config.yaml file in a '.pyprocgam' folder in your home directory 
+5. Make a config.yaml file in a '.pyprocgam' folder in your home directory 
 
 ``` 
 mkdir ~/.pyprocgame
@@ -60,7 +60,7 @@ dmd_cache_path: ~/.pyprocgame/dmd_cache
 
 - Clone this repository to a working directory (e.g ~/FAPO/)
 
-## Configuring Midi
+## Configuring MIDI
 
 1. Open `~/FAPO/GameConfig.py` or `HOMEDIRECTORY/FAPO/GameCoonfig.pg` in any text editor (Sublime preferred)
 
@@ -128,4 +128,6 @@ python FapoGame.py
 
 ## Troubleshooting
 
-xxx
+- If the machine stops playing or responding (e.g. no flipper control during game play), check the Terminal window to see if a crash has occured. Note down the error log (usually the last 4 or 5 lines), sink any balls on the playfield or plungers, then you can rerun the program again by following step 5 or hitting the 'up' arrow then Enter.
+
+- `IOError: Unable to open ftdi device: -3: device not found` means the computer is having trouble connecting to P-ROC. Usually this means that the pinball table isn't switched on or the USB dirvers haven't been configured as in step 2. If neither is the case, switch off the machine reconnect and turn it back on and it should work. Another possibility is the fourth line of the 'config.yaml' file (from installation step 5)  `#pinproc_class: procgame.fakepinproc.FakePinPROC` has the hash symbol missing from the front. 
