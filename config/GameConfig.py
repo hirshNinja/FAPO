@@ -5,9 +5,12 @@ class GameConfig():
     self.inputKeyboardTest = True
     self.inputLaunchpadTest = True
     self.lampToggle = True
-    self.inputMidiSolenoids = 1
-    self.inputMidiLamps = 2
-    self.outputMidiSwitches = 0
+    self.inputMidiSolenoids = 2 # Solenoid MIDI Port
+    self.inputMidiLamps = 1     # Lamp MIDI Port  
+    self.outputMidiSwitches = 0 # on - channel 1, off - channel 2, command - channel 3
+    self.midiStartGame = 0      # Output & Input MIDI Note (C0) for Starting Game
+    self.midiBallStarting = 1   # Output & Input MIDI Note (C#0) for Ball Starting
+    self.disableMaxCtrl = True
     self.midiKeyboardMap = {
       48 :'C01',
       49 :'C02',

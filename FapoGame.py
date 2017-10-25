@@ -5,6 +5,7 @@ import procgame.lamps
 import alphanumeric2
 import auxport2
 from procgame.modes import trough
+import time
 
 import pinproc
 from pinproc import PinPROC
@@ -67,18 +68,127 @@ class FapoGame(procgame.game.GameController):
     def fireMidiActive (sw):
       midiNum = int(filter(str.isdigit, sw.yaml_number))
       print sw.name, midiNum 
-      self.midi_out.send_message([0x90, midiNum, 100]) # Note on
+      self.midi_out.send_message([0x90, midiNum, 100]) # Note on channel 1
       # midi_out.send_message([0x80, midiNum, 0]) # Note off
 
     def fireMidiInactive (sw):
       midiNum = int(filter(str.isdigit, sw.yaml_number))
-      self.midi_out.send_message([0x91, midiNum, 100]) # Note on
+      self.midi_out.send_message([0x91, midiNum, 100]) # Note off channel 2
       # midi_out.send_message([0x80, midiNum, 0]) # Note off
 
     for sw in self.switches: 
       self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=fireMidiActive)
       self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=fireMidiInactive)
+  
 
+  def tick(self):
+    self.handleMidiInput()
+
+  def reset(self):
+    super(FapoGame, self).reset()
+    self.modes.add(self.alpha_mode)
+    self.modes.add(self.trough_mode)
+    self.modes.add(self.idle_mode)
+    self.resetSolenoids()
+
+  def resetSolenoids(self):
+    self.flippersOff()
+    self.coils.rampDiverter.pulse()
+    self.rudyMouthClose()
+    self.trapDoorClose()
+    self.crazyStepsClose()
+    self.coils.outhole.pulse()
+    self.coils.tunnelKickbig.pulse()
+    self.coils.rudyKickbig.pulse()
+
+  def updateBallDisplay(self):
+    self.alpha_display.display(["      PLAY      ", "   Ball " + str(self.ball) + " of " + str(self.balls_per_game) + "  "])
+
+  # TEST IF THIS OVERRIDE IS OKAY
+  def start_game(self):
+    self.game_started()
+    if self.gameConfig.disableMaxCtrl:
+      self.midi_start_game()
+    else:
+      # Fire start_game midi at Max
+      self.midi_out.send_message([0x92, self.gameConfig.midiStartGame, 100]) # Command on channel 3
+
+  def midi_start_game(self):
+    self.start_ball()
+    self.ball_start_time = time.time()
+    self.add_player()
+    self.updateBallDisplay()
+    self.flippersOn()
+
+  def ballDrained(self):
+    # Check to see if ball is in play to determine false positive
+    if not self.trough_mode.num_balls_in_play:
+      self.end_ball()
+      print "BALL DRAINED"
+      if self.ball > 0:
+        self.updateBallDisplay()
+      
+
+  def game_ended(self):
+    print "GAME OVER!"
+    self.alpha_display.display(["      GAME      ", "      OVER      "])
+    self.basic_mode.delay(name=None, event_type=None, delay=5, handler=self.reset, param=None)
+
+  def ball_starting(self):
+    if self.gameConfig.disableMaxCtrl:
+      self.midi_ball_starting()
+    else:
+      self.midi_out.send_message([0x92, self.gameConfig.midiBallStarting, 100]) # Command on channel 3 
+
+  def midi_ball_starting(self):
+    self.lampctrl.play_show('start', repeat=True)
+    self.trough_mode.launch_balls(1)
+
+  def flippersOn(self):
+    # General Illumination on?
+    self.enable_flippers(enable=True)
+
+  def flippersOff(self):
+    # General Illumination off?
+    self.enable_flippers(enable=False)
+
+  def crazyStepsOpen(self):
+    self.coils.rampDiverter.schedule(schedule=0xffffffff,
+    cycle_seconds=1, now=True)
+    self.coils.stepsGate.schedule(schedule=0xffffffff,
+    cycle_seconds=4, now=True)
+    self.lamps.stepsOpen.schedule(schedule=0xffffffff,
+    cycle_seconds=4, now=True)
+    self.lamps.rampStepsLamp.schedule(schedule=0xffffffff,
+    cycle_seconds=4, now=True)
+
+  def crazyStepsClose(self):
+    self.coils.rampDiverter.pulse(1)
+    self.coils.stepsGate.pulse(1)
+    self.lamps.stepsOpen.pulse()
+    self.lamps.rampStepsLamp.pulse()
+
+  def rudyMouthOpen(self):
+    self.coils.upDownDriver.enable()
+    self.coils.mouthMotor.pulse()
+
+  def rudyMouthClose(self):
+    self.coils.upDownDriver.disable()
+    self.coils.mouthMotor.pulse()
+
+  def trapDoorOpen(self):
+    if self.switches.trapDoorClosed.state:
+      self.lamps.trapDoorBonus.schedule(schedule=0xffffffff,
+    cycle_seconds=0, now=True)
+      self.coils.trapDoorOpen.pulse()
+      self.lampctrl.play_show('trapdoorOpen', repeat=True)
+
+
+  def trapDoorClose(self):
+    if not self.switches.trapDoorClosed.state:
+      self.lamps.trapDoorBonus.pulse()
+      self.coils.trapDoorClose.pulse()
+      self.lampctrl.stop_show()
 
   def handleMidiInput(self):
 
@@ -88,6 +198,12 @@ class FapoGame(procgame.game.GameController):
         for coil in self.coils:
           if coil.yaml_number == yaml_num:
             coil.pulse()
+      else:
+        if midi == self.gameConfig.midiStartGame:
+          self.midi_start_game()
+        elif midi == self.gameConfig.midiBallStarting:
+          self.midi_ball_starting()
+
 
     def handleLampInputMidi(midi):
       if self.gameConfig.inputLaunchpadTest:
@@ -142,7 +258,7 @@ class FapoGame(procgame.game.GameController):
                 coil.pulse()
 
     solenoidMsg, delta_time = self.midi_in_sol.get_message()
-    if solenoidMsg and solenoidMsg[0] == 144:
+    if solenoidMsg and solenoidMsg[0] == 144 and solenoidMsg[2] == 127:
       print solenoidMsg, delta_time
       handleSolenoidInputMidi(solenoidMsg[1])
 
@@ -151,92 +267,6 @@ class FapoGame(procgame.game.GameController):
       print "LAMP"
       print lampMsg, delta_time2
       handleLampInputMidi(lampMsg)
-
-  def tick(self):
-    self.handleMidiInput()
-
-  def reset(self):
-    super(FapoGame, self).reset()
-    self.modes.add(self.alpha_mode)
-    self.modes.add(self.trough_mode)
-    self.modes.add(self.idle_mode)
-    self.resetSolenoids()
-
-  def resetSolenoids(self):
-    self.flippersOff()
-    self.coils.rampDiverter.pulse()
-    self.rudyMouthClose()
-    self.trapDoorClose()
-    self.crazyStepsClose()
-    self.coils.outhole.pulse()
-    self.coils.tunnelKickbig.pulse()
-    self.coils.rudyKickbig.pulse()
-
-  def updateBallDisplay(self):
-    self.alpha_display.display(["      PLAY      ", "   Ball " + str(self.ball) + " of " + str(self.balls_per_game) + "  "])
-
-  def ballDrained(self):
-    # Check to see if ball is in play to determine false positive
-    if not self.trough_mode.num_balls_in_play:
-      self.end_ball()
-      print "BALL DRAINED"
-      if self.ball > 0:
-        self.updateBallDisplay()
-      
-
-  def game_ended(self):
-    print "GAME OVER!"
-    self.alpha_display.display(["      GAME      ", "      OVER      "])
-    self.basic_mode.delay(name=None, event_type=None, delay=5, handler=self.reset, param=None)
-
-  def ball_starting(self):
-    self.lampctrl.play_show('start', repeat=True)
-    self.trough_mode.launch_balls(1)
-
-  def flippersOn(self):
-    self.enable_flippers(enable=True)
-
-  def flippersOff(self):
-    self.enable_flippers(enable=False)
-
-  def crazyStepsOpen(self):
-    self.coils.rampDiverter.schedule(schedule=0xffffffff,
-    cycle_seconds=1, now=True)
-    self.coils.stepsGate.schedule(schedule=0xffffffff,
-    cycle_seconds=4, now=True)
-    self.lamps.stepsOpen.schedule(schedule=0xffffffff,
-    cycle_seconds=4, now=True)
-    self.lamps.rampStepsLamp.schedule(schedule=0xffffffff,
-    cycle_seconds=4, now=True)
-
-  def crazyStepsClose(self):
-    self.coils.rampDiverter.pulse(1)
-    self.coils.stepsGate.pulse(1)
-    self.lamps.stepsOpen.pulse()
-    self.lamps.rampStepsLamp.pulse()
-
-  def rudyMouthOpen(self):
-    self.coils.upDownDriver.enable()
-    self.coils.mouthMotor.pulse()
-
-  def rudyMouthClose(self):
-    self.coils.upDownDriver.disable()
-    self.coils.mouthMotor.pulse()
-
-  def trapDoorOpen(self):
-    if self.switches.trapDoorClosed.state:
-      self.lamps.trapDoorBonus.schedule(schedule=0xffffffff,
-    cycle_seconds=0, now=True)
-      self.coils.trapDoorOpen.pulse()
-      self.lampctrl.play_show('trapdoorOpen', repeat=True)
-
-
-  def trapDoorClose(self):
-    if not self.switches.trapDoorClosed.state:
-      self.lamps.trapDoorBonus.pulse()
-      self.coils.trapDoorClose.pulse()
-      self.lampctrl.stop_show()
-
        
 
 def run():

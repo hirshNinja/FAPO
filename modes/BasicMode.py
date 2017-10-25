@@ -11,11 +11,12 @@ class BasicMode(procgame.game.Mode):
     self.ballInMouth = False
     self.openCrazySteps = False
     self.game.start_game()
-    self.game.start_ball()
-    self.game.ball_start_time = time.time()
-    self.game.add_player()
-    self.game.updateBallDisplay()
-    self.game.flippersOn()
+
+    # self.game.start_ball()
+    # self.game.ball_start_time = time.time()
+    # self.game.add_player()
+    # self.game.updateBallDisplay()
+    # self.game.flippersOn()
     return
 
 ### RESET GAME/MODE ###
