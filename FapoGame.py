@@ -93,6 +93,7 @@ class FapoGame(procgame.game.GameController):
       if self.gameConfig.inputLaunchpadTest:
         handleLaunchpadTest(midi)   
       else: 
+        # IF STATEMENTS FOR GENERAL ILLUMINATION
         for lamp in self.lamps:
           if lamp.yaml_number == ('L' + str(midi[1])):
             if midi[0] == 144:

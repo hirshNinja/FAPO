@@ -113,6 +113,8 @@ cd ~/FAPO
 git pull
 ```
 
+- if you've made any changes (like to the config file) it will ask you to commit or stash first. If you want to see what those are type `git diff` and take a note of them. Then type `git stash` so you can try step 4 again.
+
 5. Run the program:
 ```
 python FapoGame.py
