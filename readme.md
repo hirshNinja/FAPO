@@ -1,6 +1,6 @@
 ## Introduction
 
-Code repository for the **For Amusement Purposes Only** project.
+Code repository for the 'For Amusement Purposes Only' project.
 
 ## Hardware installation
 
@@ -58,7 +58,10 @@ dmd_cache_path: ~/.pyprocgame/dmd_cache
 - Clone this repository to a working directory (e.g ~/FAPO/)
 
 
+
 ## Running the Software
+
+Power on the computer and plug in the USB cable. Then turn on the pinball table (switch is underneath)
 
 1. Open up the terminal 
  - cmd + space
