@@ -132,9 +132,13 @@ class FapoGame(procgame.game.GameController):
               if yaml_num[0] == 'C':
                 coil.schedule(schedule=0xffffff, cycle_seconds=10, now=True) # limit coils to 4 seconds
               else:
-                coil.pulse(0)
+                if coil.state()['state'] == 1 and coil.state()['outputDriveTime'] != 1:
+                  coil.disable()
+                else:
+                  coil.enable()
             else:
-              coil.pulse()
+              if yaml_num[0] == 'C':
+                coil.pulse()
 
     solenoidMsg, delta_time = self.midi_in_sol.get_message()
     if solenoidMsg and solenoidMsg[0] == 144:
