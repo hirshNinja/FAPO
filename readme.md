@@ -23,12 +23,15 @@ Install the libraries in this guide:
 
 Make a config.yaml file in a '.pyprocgam' folder in your home directory 
 
-```mkdir ~/.pyprocgame
-cd ~/.pyprocgame```
+``` 
+mkdir ~/.pyprocgame
+cd ~/.pyprocgame
+```
 
 config will look like this:
 
-```font_path:
+``` 
+font_path:
     - .
     - ~/FAPO/dmd
 #pinproc_class: procgame.fakepinproc.FakePinPROC
@@ -45,7 +48,8 @@ keyboard_switch_map:
     z: SF4
     /: SF2
 desktop_dmd_scale: 2
-dmd_cache_path: ~/.pyprocgame/dmd_cache```
+dmd_cache_path: ~/.pyprocgame/dmd_cache
+```
 
 
 
