@@ -1,31 +1,69 @@
-## Synopsis
+## Introduction
 
-At the top of the file there should be a short introduction and/ or overveiw that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+Code repository for the **For Amusement Purposes Only** project.
 
-## Code Example
+## Hardware installation
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+Install the P-ROC board into the Williams Funhouse pinball machine. Connect USB cable to host computer (currently OSX)
 
-## Motivation
+## Prerequisite Software 
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+Make sure Python 2.7 in installed on the machine.
+
+Install the libraries in this guide: 
+ - up to step 13
+ - make sure you git clone pyprocgame, not just download the zip!
+ - something else to make it work (with one of the cmake's?)
+ - http://skeletongame.com/step-1-alternate-manual-installation-for-osxlinux/
+  
+
+ If using OS X 10.11+, make sure you see the answer to this post about Apple Integrity Protection for errors relating to importing .dylib libraries:
+ https://stackoverflow.com/questions/31343299/mysql-improperly-configured-reason-unsafe-use-of-relative-path
+
+
+Make a config.yaml file in a '.pyprocgam' folder in your home directory 
+
+```mkdir ~/.pyprocgame
+cd ~/.pyprocgame```
+
+config will look like this:
+
+```font_path:
+    - .
+    - ~/FAPO/dmd
+#pinproc_class: procgame.fakepinproc.FakePinPROC
+config_path:
+    - ~/PROC/config
+keyboard_switch_map:
+    # Enter, Up, Down, Exit
+    7: SD8
+    8: SD7
+    9: SD6
+    0: SD5
+    # Start:
+    s: S13
+    z: SF4
+    /: SF2
+desktop_dmd_scale: 2
+dmd_cache_path: ~/.pyprocgame/dmd_cache```
+
+
 
 ## Installation
 
-Provide code examples and explanations of how to get the project.
+- Clone this repository to a working directory (e.g ~/FAPO/)
 
-## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+## Running the Software
 
-## Tests
+1. Open up the terminal 
+... - cmd + space
+... - type `Terminal`
+... - hit enter
 
-Describe and show how to run the tests with code examples.
+2.  
 
-## Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+## Troubleshooting
 
-## License
-
-A short snippet describing the license (MIT, Apache, etc.)
+xxx
