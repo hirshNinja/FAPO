@@ -61,16 +61,34 @@ dmd_cache_path: ~/.pyprocgame/dmd_cache
 ## Running the Software
 
 1. Open up the terminal 
-...* cmd + space
-...* type `Terminal`
-...* hit enter
+⋅⋅⋅* cmd + space
+⋅⋅⋅* type `Terminal`
+⋅⋅⋅* hit enter
 
 2. If using OS X, configure the USB drivers in terminal (needs to be done after every reboot):
-... ``` sudo kextunload -bundle-id com.apple.driver.AppleUSBFTDI ```
-... to undo this: ``` sudo kextload -bundle-id com.apple.driver.AppleUSBFTDI ```
+``` 
+sudo kextunload -bundle-id com.apple.driver.AppleUSBFTDI 
+```
 
-3. Navigate to home directory/run 
+to undo this: 
+```
+sudo kextload -bundle-id com.apple.driver.AppleUSBFTDI
+```
 
+3. Navigate to working directory:
+```
+cd ~/FAPO
+```
+
+4. Pull any new updates:
+```
+git pull
+```
+
+5. Run the program:
+```
+python FapoGame.py
+```
 
 ## Troubleshooting
 
