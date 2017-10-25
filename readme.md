@@ -93,6 +93,14 @@ git pull
 python FapoGame.py
 ```
 
+### Shutting down
+
+1. Stop the software by clicking on the Terminal window and pressing CTRL + C
+
+2. Turn off the machine
+
+3. Unplug the USB cable
+
 ## Troubleshooting
 
 xxx
