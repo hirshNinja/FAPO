@@ -62,19 +62,21 @@ dmd_cache_path: ~/.pyprocgame/dmd_cache
 
 ## Configuring Midi
 
-1. Open `~/FAPO/GameConfig.py` in any text editor (Sublime preferred)
+1. Open `~/FAPO/GameConfig.py` or `HOMEDIRECTORY/FAPO/GameCoonfig.pg` in any text editor (Sublime preferred)
 
 
 - changing values from `True` to `False` or vica versa, must have a captial first letter (e.g `True` not `true`, `False` not `false`)
 - leave `self.inputKeyboardTest = True` for now
-- to enable/disable the USB Novation Launchpad controlling the lights, change the `self.inputLaunchpadTest` value. If `self.inputLaunchpadTest = True`, the machine will not accept midi light signals from MAX so set to False if you aren't using the Launchpad.
-- if you want the test to Toggle lights rather than turn them on while the corresponding button is pressed, change  self.lampToggle to equal False.
+- to enable/disable the USB Novation Launchpad controlling the lights, change the `self.inputLaunchpadTest` value. If `self.inputLaunchpadTest = True`, the machine will not accept midi light signals from MAX so set to `False` if you aren't using the Launchpad.
+- if you want the test to Toggle lights rather than turn them on while the corresponding button is pressed, change  `self.lampToggle` to equal `False`.
 
 2. The next three values determine which MIDI Ports the software is using to talk with MAX. If you open MIDI Monitor and expand the 'MIDI Sources' option in the 'Sources' pane, you can view which MIDI ports are in the machine. The numbering counts from 0 (so the first port is 0, the second port is 1, etc.)
 
 These numbers correspond to the input/output variables in the config file.
 
-- `self.inputMidiSolenoids` is the port that waits for MIDI signals to control the solenoids/coils in the pinball table. If you look at the `self.midiKeyboardMap` variable, you can see the mapping between the MIDI note and which solenoid it triggers (e.g. MIDI Note 48 triggers Solenoid C01 Outhole). WARNING: DO NOT CONTINUALLY LEAVE A SOLENOID ON BECAUSE IT WILL BURN OUT AND EXPLODE
+- `self.inputMidiSolenoids` is the port that waits for MIDI signals to control the solenoids/coils in the pinball table. If you look at the `self.midiKeyboardMap` variable, you can see the mapping between the MIDI note and which solenoid it triggers (e.g. MIDI Note 48 triggers Solenoid C01 Outhole). 
+
+<b>WARNING: DO NOT CONTINUALLY LEAVE A SOLENOID ON BECAUSE IT WILL BURN OUT AND EXPLODE</b>
 
 - `self.inputMidiLamps` is the port that waits for MIDI signals to control the lights. The notes are mapped to the lamp matrix in the pinball manual. So MIDI note 11 will light lamp L11 (Gangway 75,000 left) and MIDI note 37 will light lamp L37 (Clock 11 o'clock). Will the MIDI signal is on the lamp will stay lit until the signal sends the off trigger. 
 
