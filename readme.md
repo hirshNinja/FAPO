@@ -4,7 +4,7 @@ Code repository for the **For Amusement Purposes Only** project.
 
 ## Hardware installation
 
-Install the P-ROC board into the Williams Funhouse pinball machine. Connect USB cable to host computer (currently OSX)
+Install the P-ROC board into the Williams Funhouse pinball machine. For now, unplug the speakers from the driver board. Connect USB cable to host computer (currently OSX)
 
 ## Prerequisite Software 
 
@@ -61,11 +61,15 @@ dmd_cache_path: ~/.pyprocgame/dmd_cache
 ## Running the Software
 
 1. Open up the terminal 
-... - cmd + space
-... - type `Terminal`
-... - hit enter
+...* cmd + space
+...* type `Terminal`
+...* hit enter
 
-2.  
+2. If using OS X, configure the USB drivers in terminal (needs to be done after every reboot):
+... ``` sudo kextunload -bundle-id com.apple.driver.AppleUSBFTDI ```
+... to undo this: ``` sudo kextload -bundle-id com.apple.driver.AppleUSBFTDI ```
+
+3. Navigate to home directory/run 
 
 
 ## Troubleshooting
