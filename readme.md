@@ -10,6 +10,9 @@ Install the P-ROC board into the Williams Funhouse pinball machine. For now, unp
 
 Make sure Python 2.7 in installed on the machine.
 
+Also downloading and installing MIDI monitor is very helpful:
+https://www.snoize.com/MIDIMonitor/
+
 Install the libraries in this guide: 
  - up to step 13
  - make sure you git clone pyprocgame, not just download the zip!
@@ -57,7 +60,27 @@ dmd_cache_path: ~/.pyprocgame/dmd_cache
 
 - Clone this repository to a working directory (e.g ~/FAPO/)
 
+## Configuring Midi
 
+1. Open ~/FAPO/GameConfig.py in any text editor (Sublime preferred)
+
+
+- changing values from True to False or vica versa, must have a captial first letter (e.g True not true, False not false)
+- leave self.inputKeyboardTest = True for now
+- to enable/disable the USB Novation Launchpad controlling the lights, change the self.inputLaunchpadTest value. If self.inputLaunchpadTest = True, the machine will not accept midi light signals from MAX so set to False if you aren't using the Launchpad.
+- if you want the test to Toggle lights rather than turn them on while the corresponding button is pressed, change  self.lampToggle to equal False.
+
+2. The next three values determine which MIDI Ports the software is using to talk with MAX. If you open MIDI Monitor and expand the 'MIDI Sources' option in the 'Sources' pane, you can view which MIDI ports are in the machine. The numbering counts from 0 (so the first port is 0, the second port is 1, etc.)
+
+These numbers correspond to the input/output variables in the config file.
+
+- `self.inputMidiSolenoids` is the port that waits for MIDI signals to control the solenoids/coils in the pinball table. If you look at the `self.midiKeyboardMap` variable, you can see the mapping between the MIDI note and which solenoid it triggers (e.g. MIDI Note 48 triggers Solenoid C01 Outhole). WARNING: DO NOT CONTINUALLY LEAVE A SOLENOID ON BECAUSE IT WILL BURN OUT AND EXPLODE
+
+- `self.inputMidiLamps` is the port that waits for MIDI signals to control the lights. The notes are mapped to the lamp matrix in the pinball manual. So MIDI note 11 will light lamp L11 (Gangway 75,000 left) and MIDI note 37 will light lamp L37 (Clock 11 o'clock). Will the MIDI signal is on the lamp will stay lit until the signal sends the off trigger. 
+
+- `self.outputMidiSwitches` is the port that sends MIDI whenever a switch is activated or deactivated on the pinball machine on channel 1 and channel 2, respectively.
+
+3. Save and close the file. If the software is running, stop (CTRL + C) and restart it.
 
 ## Running the Software
 
