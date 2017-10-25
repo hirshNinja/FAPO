@@ -5,9 +5,9 @@ class GameConfig():
     self.inputKeyboardTest = True
     self.inputLaunchpadTest = True
     self.lampToggle = True
-    self.inputMidiChSolendoids = 1
-    self.inputMidiChLamps = 2
-    self.outputChSwitches = 0
+    self.inputMidiSolenoids = 1
+    self.inputMidiLamps = 2
+    self.outputMidiSwitches = 0
     self.midiKeyboardMap = {
       48 :'C01',
       49 :'C02',

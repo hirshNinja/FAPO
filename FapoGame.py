@@ -47,11 +47,11 @@ class FapoGame(procgame.game.GameController):
 
     ### MIDI HANDLING ###
     self.midi_in_sol = rtmidi.MidiIn()
-    self.midi_in_sol.open_port(self.gameConfig.inputMidiChSolendoids)
+    self.midi_in_sol.open_port(self.gameConfig.inputMidiSolenoids)
     self.midi_in_lamp = rtmidi.MidiIn()
-    self.midi_in_lamp.open_port(self.gameConfig.inputMidiChLamps)
+    self.midi_in_lamp.open_port(self.gameConfig.inputMidiLamps)
     self.midi_out = rtmidi.MidiOut()
-    self.midi_out.open_port(self.gameConfig.outputChSwitches)
+    self.midi_out.open_port(self.gameConfig.outputMidiSwitches)
     self.addSwitchHandlers()
 
     ### LAMP SHOWS ###
@@ -90,7 +90,7 @@ class FapoGame(procgame.game.GameController):
             coil.pulse()
 
     def handleLampInputMidi(midi):
-      if self.gameConfig.inputLaunchpadTest and midi[1] in self.midiLampMap:
+      if self.gameConfig.inputLaunchpadTest:
         handleLaunchpadTest(midi)   
       else: 
         for lamp in self.lamps:
@@ -102,13 +102,17 @@ class FapoGame(procgame.game.GameController):
             break
 
     def handleLaunchpadTest(midi):
+      if not (midi[1] in self.midiLampMap):
+        for lamp in self.lamps:
+          lamp.disable()
+        return 
+
       yaml_num = self.midiLampMap[midi[1]]
       if yaml_num[0] == 'L':
         for lamp in self.lamps:
           if lamp.yaml_number == yaml_num:
             if self.gameConfig.lampToggle:
               if midi[2] == 0:
-                print lamp.state()
                 if lamp.state()['state'] == 1 and lamp.state()['outputDriveTime'] != 1:
                   print 'true'
                   lamp.disable()
@@ -230,12 +234,12 @@ class FapoGame(procgame.game.GameController):
 
        
 
-def startGame():
+def run():
   game = FapoGame(pinproc.MachineTypeWPCAlphanumeric)
   game.reset()
   game.run_loop()
   
 
 if __name__ == '__main__':
-  startGame()
+  run()
 
