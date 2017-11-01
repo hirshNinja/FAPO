@@ -20,6 +20,7 @@ class FapoGame(procgame.game.GameController):
   def __init__(self, machine_type):
     super(FapoGame, self).__init__(machine_type)
     self.ball_start_time = 0
+    self.modeIndex = 0
     self.load_config('config/funhouse.yaml')
 
     ### ALPHANUMERIC DISPLAY ###
@@ -28,13 +29,13 @@ class FapoGame(procgame.game.GameController):
     # self.scoredisplay = scoredisplay.AlphaScoreDisplay(self,4) # blink text
 
     ### MODES ###
-    # self.modes = []
+    self.modeSequence = []
     self.attract_mode = AttractMode.AttractMode(game=self)
-    # self.modes.append(self.attract_mode)
+    self.modeSequence.append(self.attract_mode)
     self.idle_mode = IdleMode.IdleMode(game=self)
-    # self.modes.append(self.idle_mode)
+    self.modeSequence.append(self.idle_mode)
     self.basic_mode = BasicMode.BasicMode(game=self)
-    # self.modes.append(self.basic_mode)
+    self.modeSequence.append(self.basic_mode)
     self.steps_mode = StepsMode.StepsMode(game=self)
     self.alpha_mode = scoredisplay.AlphaScoreDisplay(game=self,priority=5)
     self.trough_mode = procgame.modes.trough.Trough(self,
@@ -58,15 +59,23 @@ class FapoGame(procgame.game.GameController):
       self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.midiHandler.fireMidiActive)
       self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=self.midiHandler.fireMidiInactive)
   
-
   def tick(self):
     self.midiHandler.handleMidiInput()
+
+  def nextMode(self):
+    print self.modeSequence
+    print 'NEXT MODE: ' + str(self.modeIndex)
+    if self.modeIndex > 0:
+      self.modes.remove(self.modeSequence[self.modeIndex-1])
+    self.modes.add(self.modeSequence[self.modeIndex])
+    self.modeIndex = self.modeIndex + 1
 
   def reset(self):
     super(FapoGame, self).reset()
     self.modes.add(self.alpha_mode)
     self.modes.add(self.trough_mode)
-    self.modes.add(self.idle_mode)
+    self.modeIndex = 0
+    self.nextMode()
     self.resetSolenoids()
 
   def resetSolenoids(self):
