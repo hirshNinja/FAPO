@@ -1,6 +1,6 @@
 
 
-class GameConfig():
+class MidiConfig():
   def __init__(self):
     self.inputKeyboardTest = True
     self.inputLaunchpadTest = True

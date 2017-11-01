@@ -62,7 +62,7 @@ dmd_cache_path: ~/.pyprocgame/dmd_cache
 
 ## Configuring MIDI
 
-1. Open `~/FAPO/GameConfig.py` or `HOMEDIRECTORY/FAPO/GameCoonfig.pg` in any text editor (Sublime preferred)
+1. Open `~/FAPO/MidiConfig.py` or `HOMEDIRECTORY/FAPO/MidiConfig.pg` in any text editor (Sublime preferred)
 
 
 - changing values from `True` to `False` or vica versa, must have a captial first letter (e.g `True` not `true`, `False` not `false`)
@@ -92,7 +92,7 @@ Power on the computer and plug in the USB cable. Then turn on the pinball table 
  - cmd + space
  - type `Terminal`
  - hit enter
-
+1
 2. If using OS X, configure the USB drivers in terminal (needs to be done after every reboot):
 ``` 
 sudo kextunload -bundle-id com.apple.driver.AppleUSBFTDI 

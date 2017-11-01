@@ -1,5 +1,4 @@
 import procgame.game
-import time
 
 class BasicMode(procgame.game.Mode):
   def __init__(self, game):
