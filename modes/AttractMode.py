@@ -9,6 +9,10 @@ class AttractMode(procgame.game.Mode):
   def mode_started(self):
     self.game.lampctrl.play_show('attract', repeat=True)
     self.delay = self.delay + time.time()
+    self.game.coils.outhole.pulse()
+    self.game.coils.tunnelKickbig.pulse()
+
+
 
   def mode_tick(self):
     if time.time() >= self.delay and not self.modeEnded:
@@ -16,11 +20,16 @@ class AttractMode(procgame.game.Mode):
       self.game.nextMode()
 
     if self.game.switches.outhole.state:
-      self.game.coils.outhole.pulsed_patter(on_time=30, off_time=50, run_time=1, now=True)
     if self.game.switches.tunnelKickout.state:
-      self.game.coils.tunnelKickbig.pulsed_patter(on_time=30, off_time=50, run_time=1, now=True)
 
 
   def mode_stopped(self):
     self.game.lampctrl.stop_show()
     
+  def sw_outhole_active_for_100ms(self, sw):
+    self.game.coils.outhole.pulse()
+    return procgame.game.SwitchContinue
+
+  def sw_tunnelKickout_active_for_200ms(self, sw):
+    self.game.coils.tunnelKickbig.pulse()
+    return procgame.game.SwitchContinue
