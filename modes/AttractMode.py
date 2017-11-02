@@ -11,7 +11,7 @@ class AttractMode(procgame.game.Mode):
     self.delay = self.delay + time.time()
     self.game.coils.outhole.pulse()
     self.game.coils.tunnelKickbig.pulse()
-
+    # derb
 
 
   def mode_tick(self):
