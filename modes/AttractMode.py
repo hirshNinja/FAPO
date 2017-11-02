@@ -12,21 +12,21 @@ class AttractMode(procgame.game.Mode):
     self.game.coils.outhole.pulse()
     self.game.coils.tunnelKickbig.pulse()
     # derb
+    return
 
 
   def mode_tick(self):
     if time.time() >= self.delay and not self.modeEnded:
       self.modeEnded = True
       self.game.nextMode()
-
-    if self.game.switches.outhole.state:
-    if self.game.switches.tunnelKickout.state:
+    return
 
 
   def mode_stopped(self):
     self.game.lampctrl.stop_show()
+    return
     
-  def sw_outhole_active_for_100ms(self, sw):
+  def sw_outhole_active(self, sw):
     self.game.coils.outhole.pulse()
     return procgame.game.SwitchContinue
 
