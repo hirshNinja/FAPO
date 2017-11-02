@@ -92,10 +92,11 @@ class FapoGame(procgame.game.GameController):
     self.alpha_display.display(["      PLAY      ", "   Ball " + str(self.ball) + " of " + str(self.balls_per_game) + "  "])
 
   # TEST IF THIS OVERRIDE IS OKAY
-  def start_game(self):
-    self.midiHandler.fireMidiStartGame()
+  # def start_game(self):
+  #   self.midiHandler.fireMidiStartGame()
 
-  def midi_start_game(self):
+  # def midi_start_game(self):
+  def start_game(self):
     self.start_ball()
     self.ball_start_time = time.time()
     self.add_player()

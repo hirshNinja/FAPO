@@ -9,7 +9,8 @@ class MidiConfig():
     self.inputMidiLamps = 1     # Lamp MIDI Port  
     self.outputMidiSwitches = 0 # on - channel 1, off - channel 2, command - channel 3
     self.midiStartGame = 0      # Output & Input MIDI Note (C0) for Starting Game
-    self.midiBallStarting = 1   # Output & Input MIDI Note (C#0) for Ball Starting
+    self.midiBallStarting = 3   # Output & Input MIDI Note (C#0) for Ball Starting
+    self.midiNextMode = 2   # Output & Input MIDI Note (C#0) for Ball Starting
     self.disableMaxCtrl = True
     self.midiKeyboardMap = {
       48 :'C01',

@@ -3,7 +3,7 @@ import time
 class AttractMode(procgame.game.Mode):
   def __init__(self, game):
     super(AttractMode, self).__init__(game=game, priority=4)
-    self.delay = 2
+    self.delay = 10
     self.modeEnded = False
 
   def mode_started(self):

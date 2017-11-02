@@ -11,13 +11,15 @@ class IdleMode(procgame.game.Mode):
     # self.game.scoredisplay.set_text("Press Start",0,blink_rate=0.5, seconds=0.5)
     # self.game.scoredisplay.set_text("Start",1,blink_rate=0.1, seconds=0.1)
 
+    # ## FIRE MIDI TO MAX TO DISPLAY PRESS START ## #
+    self.game.midiHandler.midi_out.send_message([0x92, 1, 127])
     self.game.alpha_display.display(["     PRESS      ", "     START      "])
 
     # self.game.coils.blueFlashers.schedule(schedule=0xa10340, cycle_seconds=0, now=False)
 
-  # def sw_startButton_active(self, sw):
-  #   self.game.modes.remove(self)
-  #   return procgame.game.SwitchStop
+  def sw_startButton_active(self, sw):
+    self.game.midiHandler.fireMidiActive(sw)
+    return procgame.game.SwitchStop
 
   # def mode_tick(self):
   #   if self.game.switches.outhole.state:

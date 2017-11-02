@@ -25,12 +25,12 @@ class MidiHandler():
 	def fireMidiActive(self, sw):
 	  midiNum = int(filter(str.isdigit, sw.yaml_number))
 	  print sw.name, midiNum 
-	  self.midi_out.send_message([0x90, midiNum, 100]) # Note on channel 1
+	  self.midi_out.send_message([0x90, midiNum, 127]) # Note on channel 1
 	  # midi_out.send_message([0x80, midiNum, 0]) # Note off
 	  
 	def fireMidiInactive(self, sw):
 	  midiNum = int(filter(str.isdigit, sw.yaml_number))
-	  self.midi_out.send_message([0x91, midiNum, 100]) # Note off channel 2
+	  self.midi_out.send_message([0x91, midiNum, 127]) # Note off channel 2
 	  # midi_out.send_message([0x80, midiNum, 0]) # Note off
 
 	def fireMidiStartGame(self):
@@ -57,10 +57,12 @@ class MidiHandler():
 	        if coil.yaml_number == yaml_num:
 	          coil.pulse()
 	    else:
-	      if midi == self.midiConfig.midiStartGame:
-	        self.game.midi_start_game()
-	      elif midi == self.midiConfig.midiBallStarting:
-	        self.game.midi_ball_starting()
+	      if midi == self.midiConfig.nextMode:
+	        self.game.nextMode()
+	      # if midi == self.midiConfig.nextMode:
+	      #   self.game.midi_start_game()
+	      # elif midi == self.midiConfig.midiBallStarting:
+	      #   self.game.midi_ball_starting()
 
 
 	  def handleLampInputMidi(midi):
