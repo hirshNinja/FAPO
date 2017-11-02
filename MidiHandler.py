@@ -57,7 +57,7 @@ class MidiHandler():
 	        if coil.yaml_number == yaml_num:
 	          coil.pulse()
 	    else:
-	      if midi == self.midiConfig.nextMode:
+	      if midi == self.midiConfig.midiNextMode:
 	        self.game.nextMode()
 	      # if midi == self.midiConfig.nextMode:
 	      #   self.game.midi_start_game()
