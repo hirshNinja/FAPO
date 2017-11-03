@@ -4,8 +4,8 @@ class MidiConfig():
   def __init__(self):
     self.inputLaunchpadTest = False
     self.lampToggle = True
-    self.inputMidi = "IAC Driver IAC Bus 1"  # input MIDI Port, lamps - channel 1, solenoids - channel 2, command - channel 3
-    self.outputMidi = "IAC Driver IAC Bus 2" # on - channel 1, off - channel 2, command - channel 3
+    self.outputMidi = "IAC Driver IAC Bus 1"  # input MIDI Port, lamps - channel 1, solenoids - channel 2, command - channel 3
+    self.inputMidi = "IAC Driver IAC Bus 2" # on - channel 1, off - channel 2, command - channel 3
     self.midiStartGame = 0      # Output & Input MIDI Note (C0) for Starting Game
     self.midiBallStarting = 3   # Output & Input MIDI Note (C#0) for Ball Starting
     self.midiNextMode = 2   # Output & Input MIDI Note for Next Mode
