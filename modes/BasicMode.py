@@ -8,17 +8,20 @@ class BasicMode(procgame.game.Mode):
     self.switchLampMap = GameConfig.GameConfig().switchLampMap
     self.currentTarget = ''
     self.targetSwitches = []
+  
   def mode_started(self):
-
     self.ballInMouth = False
     self.openCrazySteps = False
     self.game.start_game()
     self.nextTarget()
     return
 
-  def nextTarget(self, sw=None):
+  def nextTarget(self):
     index = random.randrange(len(self.switchLampMap))
     lampYaml = self.switchLampMap.keys()[index]
+    if lampYaml == self.currentTarget:
+      nextTarget()
+      return
     switchYamls = []
     for switch in self.switchLampMap[lampYaml]:
       switchYamls.append('S' + str(switch))
@@ -27,16 +30,13 @@ class BasicMode(procgame.game.Mode):
         lamp.pulse(0)
       elif lamp.yaml_number == self.currentTarget:
         lamp.pulse()
-    for switch in self.game.switches:
-      if switch.yaml_number in switchYamls:
-        self.add_switch_handler(name=switch.name, event_type='active', delay=0, handler=self.nextTarget)
-      elif switch.yaml_number in self.targetSwitches:
-        for accepted in self.__accepted_switches:
-          if accepted.name == switch.name and accepted.handler == self.nextTarget:
-            self.__accepted_switches.remove(accepted)
     self.targetSwitches = switchYamls
     self.currentTarget = lampYaml
 
+  def checkTarget(self, sw):
+    if sw.yaml_number in self.targetSwitches:
+      nextTarget()  
+    return
 
 
 ### RESET GAME/MODE ###
