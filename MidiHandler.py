@@ -46,12 +46,12 @@ class MidiHandler():
 	  def solenoidInput(midi):
 			note = midi[1]
 			if note > 9:
-      	yaml_num = "C" + note
-      else:
-      	yaml_num = "C0" + note
-      for coil in self.game.coils:
-        if coil.yaml_number == yaml_num:
-          coil.pulse()
+				yaml_num = "C" + note
+			else:
+				yaml_num = "C0" + note
+			for coil in self.game.coils:
+				if coil.yaml_number == yaml_num:
+					coil.pulse()
 	    
 	      # if midi == self.midiConfig.nextMode:
 	      #   self.game.midi_start_game()
