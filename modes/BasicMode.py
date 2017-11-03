@@ -5,7 +5,7 @@ import random
 class BasicMode(procgame.game.Mode):
   def __init__(self, game):
     super(BasicMode, self).__init__(game=game, priority=5)
-    self.switchLampMap = GameConfig.switchLampMap
+    self.switchLampMap = GameConfig.GameConfig().switchLampMap
     self.currentTarget = ''
   def mode_started(self):
 
