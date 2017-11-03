@@ -22,17 +22,17 @@ class MidiHandler():
         midiInFound = True
         break
     if not midiInFound:
-      sys.exit("ERROR: Midi channel: " + self.midiConfig.inputMidi + "  not found.")
+      sys.exit("ERROR: Midi channel: '" + self.midiConfig.inputMidi + "'' not found.")
 
     self.midi_out = rtmidi.MidiOut()
     midiOutFound = False
     for port in self.midi_out.ports:
       if port == self.midiConfig.outputMidi:
         self.midi_out.open_port(port)
-        midiInFound = True
+        midiOutFound = True
         break
     if not midiOutFound:
-      sys.exit("ERROR: Midi channel: " + self.midiConfig.outputMidi + "  not found.")
+      sys.exit("ERROR: Midi channel: '" + self.midiConfig.outputMidi + "'' not found.")
 
 
   def fireMidiActive(self, sw):
