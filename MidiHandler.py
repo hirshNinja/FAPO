@@ -1,4 +1,4 @@
-
+import sys
 import rtmidi_python as rtmidi
 from config import MidiConfig
 
@@ -10,10 +10,30 @@ class MidiHandler():
     self.midiLampMap = None
     if self.midiConfig.inputLaunchpadTest:
       self.midiLampMap = self.midiConfig.midiLaunchpadMap
+    self.openMidiPorts()
+    
+
+  def openMidiPorts(self):
     self.midi_in = rtmidi.MidiIn()
-    self.midi_in.open_port(self.midiConfig.inputMidi)
+    midiInFound = False
+    for port in self.midi_in.ports:
+      if port == self.midiConfig.inputMidi:
+        self.midi_in.open_port(port)
+        midiInFound = True
+        break
+    if not midiInFound:
+      sys.exit("ERROR: Midi channel: " + self.inputMidi + "  not found.")
+
     self.midi_out = rtmidi.MidiOut()
-    self.midi_out.open_port(self.midiConfig.outputMidi)
+    midiOutFound = False
+    for port in self.midi_out.ports:
+      if port == self.midiConfig.outputMidi:
+        self.midi_out.open_port(port)
+        midiInFound = True
+        break
+    if not midiInFound:
+      sys.exit("ERROR: Midi channel: " + self.outputMidi + "  not found.")
+
 
   def fireMidiActive(self, sw):
     midiNum = int(filter(str.isdigit, sw.yaml_number))
