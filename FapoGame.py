@@ -57,6 +57,7 @@ class FapoGame(procgame.game.GameController):
   def addSwitchHandlers(self):
     for sw in self.switches: 
       self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.midiHandler.fireMidiActive)
+      self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.basic_mode.checkTarget)
       self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=self.midiHandler.fireMidiInactive)
   
   def tick(self):
