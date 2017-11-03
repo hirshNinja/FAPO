@@ -7,20 +7,13 @@ class MidiHandler():
 
 		self.game = game
 		self.midiConfig = MidiConfig.MidiConfig()
-		self.midiMap = None
-		self.midiLampMap = None
-		if self.midiConfig.inputKeyboardTest:
-		  self.midiMap = self.midiConfig.midiKeyboardMap
 		self.midiLampMap = None
 		if self.midiConfig.inputLaunchpadTest:
 		  self.midiLampMap = self.midiConfig.midiLaunchpadMap
-
-		self.midi_in_sol = rtmidi.MidiIn()
-		self.midi_in_sol.open_port(self.midiConfig.inputMidiSolenoids)
-		self.midi_in_lamp = rtmidi.MidiIn()
-		self.midi_in_lamp.open_port(self.midiConfig.inputMidiLamps)
+		self.midi_in = rtmidi.MidiIn()
+		self.midi_in.open_port(self.midiConfig.inputMidi)
 		self.midi_out = rtmidi.MidiOut()
-		self.midi_out.open_port(self.midiConfig.outputMidiSwitches)
+		self.midi_out.open_port(self.midiConfig.outputMidi)
 
 	def fireMidiActive(self, sw):
 	  midiNum = int(filter(str.isdigit, sw.yaml_number))
@@ -50,33 +43,37 @@ class MidiHandler():
 
 	def handleMidiInput(self):
 
-	  def handleSolenoidInputMidi(midi):
-	    if midi in self.midiMap:
-	      yaml_num = self.midiMap[midi]
-	      for coil in self.game.coils:
-	        if coil.yaml_number == yaml_num:
-	          coil.pulse()
-	    else:
-	      if midi == self.midiConfig.midiNextMode:
-	        self.game.nextMode()
+	  def solenoidInput(midi):
+      note = self.midiMap[midi[1]]
+      if note > 9:
+      	yaml_num = "C" + note
+      else:
+      	yaml_num = "C0" + note
+      for coil in self.game.coils:
+        if coil.yaml_number == yaml_num:
+          coil.pulse()
+	    
 	      # if midi == self.midiConfig.nextMode:
 	      #   self.game.midi_start_game()
 	      # elif midi == self.midiConfig.midiBallStarting:
 	      #   self.game.midi_ball_starting()
 
-
-	  def handleLampInputMidi(midi):
+	  def lampInput(midi):
 	    if self.midiConfig.inputLaunchpadTest:
 	      handleLaunchpadTest(midi)   
 	    else: 
 	      # IF STATEMENTS FOR GENERAL ILLUMINATION
 	      for lamp in self.game.lamps:
 	        if lamp.yaml_number == ('L' + str(midi[1])):
-	          if midi[0] == 144:
+	          if midi[2] == 127:
 	            lamp.pulse(0)
 	          else:
 	            lamp.pulse()
 	          break
+
+    def commandInput(midi):
+  	  if midi[1] == self.midiConfig.midiNextMode:
+  	    self.game.nextMode()
 
 	  def handleLaunchpadTest(midi):
 	    if not (midi[1] in self.midiLampMap):
@@ -117,14 +114,18 @@ class MidiHandler():
 	            if yaml_num[0] == 'C':
 	              coil.pulse()
 
-	  solenoidMsg, delta_time = self.midi_in_sol.get_message()
-	  if solenoidMsg and solenoidMsg[0] == 144 and solenoidMsg[2] == 127:
-	    print solenoidMsg, delta_time
-	    handleSolenoidInputMidi(solenoidMsg[1])
+    inputMessage, delta_time = self.midi_in.get_message()
+  	if inputMessage:
+  		if inputMessage[0] == 144:
+  			# channel 1
+  			lampInput(inputMessage)
+  		elif inputMessage[0] == 145 and inputMessage[2] == 127:
+  			# channel 2
+  			solenoidInput(inputMessage)
+  		elif inputMessage[0] == 146 and inputMessage[2] == 127:
+  			# channel 3
+  			commandInput(inputMessage)
 
-	  lampMsg, delta_time2 = self.midi_in_lamp.get_message()
-	  if lampMsg:
-	    print "LAMP"
-	    print lampMsg, delta_time2
-	    handleLampInputMidi(lampMsg)
+
+	    
 	     

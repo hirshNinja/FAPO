@@ -2,46 +2,14 @@
 
 class MidiConfig():
   def __init__(self):
-    self.inputKeyboardTest = True
-    self.inputLaunchpadTest = True
+    self.inputLaunchpadTest = False
     self.lampToggle = True
-    self.inputMidiSolenoids = 2 # Solenoid MIDI Port
-    self.inputMidiLamps = 1     # Lamp MIDI Port  
-    self.outputMidiSwitches = 0 # on - channel 1, off - channel 2, command - channel 3
+    self.inputMidi = 1     # input MIDI Port, lamps - channel 1, solenoids - channel 2, command - channel 3
+    self.outputMidi = 0 # on - channel 1, off - channel 2, command - channel 3
     self.midiStartGame = 0      # Output & Input MIDI Note (C0) for Starting Game
     self.midiBallStarting = 3   # Output & Input MIDI Note (C#0) for Ball Starting
-    self.midiNextMode = 2   # Output & Input MIDI Note (C#0) for Ball Starting
+    self.midiNextMode = 2   # Output & Input MIDI Note for Next Mode
     self.disableMaxCtrl = True
-    self.midiKeyboardMap = {
-      48 :'C01',
-      49 :'C02',
-      50 :'C03',
-      51 :'C04',
-      52 :'C05',
-      53 :'C06',
-      54 :'C07',
-      55 :'C08',
-      56 :'C09',
-      57 :'C10',
-      58 :'C11',
-      59 :'C12',
-      60 :'C13',
-      61 :'C14',
-      62 :'C15',
-      63 :'C16',
-      64 :'C17',
-      65 :'C18',
-      72 :'C19',
-      73 :'C20',
-      74 :'C21',
-      75 :'C22',
-      76 :'C23',
-      77 :'C24',
-      78 :'C25',
-      79 :'C26',
-      80 :'C27',
-      81 :'C28'
-    }
     self.midiLaunchpadMap = {
 
        0  :'L11',     # LAMP MATRIX ###

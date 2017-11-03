@@ -30,6 +30,6 @@ class AttractMode(procgame.game.Mode):
     self.game.coils.outhole.pulse()
     return procgame.game.SwitchContinue
 
-  def sw_tunnelKickout_active_for_200ms(self, sw):
+  def sw_tunnelKickout_active(self, sw):
     self.game.coils.tunnelKickbig.pulse()
     return procgame.game.SwitchContinue
