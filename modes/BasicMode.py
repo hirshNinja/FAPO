@@ -19,10 +19,10 @@ class BasicMode(procgame.game.Mode):
     index = random.randrange(len(self.switchLampMap))
     lampYaml = self.switchLampMap.keys()[index]
     switchYamls = []
-    for switch in self.switchLampMap[lampYaml]
+    for switch in self.switchLampMap[lampYaml]:
       switchYamls.append('S' + str(switch))
     for lamp in self.game.lamps:
-      if lamp.yaml_number == lampYaml
+      if lamp.yaml_number == lampYaml:
         lamp.pulse(0)
       elif lamp.yaml_number == self.currentTarget:
         lamp.pulse()
