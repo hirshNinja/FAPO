@@ -15,7 +15,7 @@ class BasicMode(procgame.game.Mode):
     self.nextTarget()
     return
 
-  def nextTarget(self)
+  def nextTarget(self):
     index = random.randrange(len(self.switchLampMap))
     lampYaml = self.switchLampMap.keys()[index]
     switchYamls = []
