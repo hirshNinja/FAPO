@@ -31,7 +31,7 @@ class MidiHandler():
         self.midi_out.open_port(port)
         midiInFound = True
         break
-    if not midiInFound:
+    if not midiOutFound:
       sys.exit("ERROR: Midi channel: " + self.outputMidi + "  not found.")
 
 
