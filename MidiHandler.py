@@ -44,8 +44,8 @@ class MidiHandler():
 	def handleMidiInput(self):
 
 	  def solenoidInput(midi):
-      note = self.midiMap[midi[1]]
-      if note > 9:
+			note = midi[1]
+			if note > 9:
       	yaml_num = "C" + note
       else:
       	yaml_num = "C0" + note
