@@ -7,6 +7,7 @@ class BasicMode(procgame.game.Mode):
     super(BasicMode, self).__init__(game=game, priority=5)
     self.switchLampMap = GameConfig.GameConfig().switchLampMap
     self.currentTarget = ''
+    self.targetSwitches = []
   def mode_started(self):
 
     self.ballInMouth = False
@@ -29,6 +30,11 @@ class BasicMode(procgame.game.Mode):
     for switch in self.game.switches:
       if switch.yaml_number in switchYamls:
         self.add_switch_handler(name=switch.name, event_type='active', delay=0, handler=self.nextTarget)
+      elif switch.yaml_number in self.targetSwitches:
+        for accepted in self.__accepted_switches:
+          if accepted.name == switch.name and accepted.handler == self.nextTarget:
+            self.__accepted_switches.remove(accepted)
+    self.targetSwitches = switchYamls
     self.currentTarget = lampYaml
 
 
