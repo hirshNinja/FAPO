@@ -11,17 +11,11 @@ class BasicMode(procgame.game.Mode):
     self.openCrazySteps = False
     self.game.start_game()
 
-    # self.game.start_ball()
-    # self.game.ball_start_time = time.time()
-    # self.game.add_player()
-    # self.game.updateBallDisplay()
-    # self.game.flippersOn()
     return
 
 ### RESET GAME/MODE ###
   def sw_startButton_active(self, sw):
-    # self.game.troughController.launch_balls(1)
-    # self.game.flippersOn()
+
     return procgame.game.SwitchContinue
 
   def sw_lockMechLeft_active_for_1000ms(self, sw):

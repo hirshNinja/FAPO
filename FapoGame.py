@@ -106,7 +106,8 @@ class FapoGame(procgame.game.GameController):
   def ballDrained(self):
     # Check to see if ball is in play to determine false positive
     if not self.trough_mode.num_balls_in_play:
-      self.end_ball()
+      # self.end_ball()
+      self.start_ball()
       print "BALL DRAINED"
       if self.ball > 0:
         self.updateBallDisplay()
