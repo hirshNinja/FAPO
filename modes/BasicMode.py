@@ -36,6 +36,7 @@ class BasicMode(procgame.game.Mode):
     print 'TARGET: ' + lampYaml 
 
   def checkTarget(self, sw):
+    print 'CHECK TARGET: ' + sw.yaml_number
     if sw.yaml_number in self.targetSwitches:
       print 'woot'
       self.nextTarget()  
