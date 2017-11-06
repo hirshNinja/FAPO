@@ -32,6 +32,7 @@ class BasicMode(procgame.game.Mode):
         lamp.pulse()
     self.targetSwitches = switchYamls
     self.currentTarget = lampYaml
+    print 'TARGET: ' + lampYaml 
 
   def checkTarget(self, sw):
     if sw.yaml_number in self.targetSwitches:
@@ -41,7 +42,7 @@ class BasicMode(procgame.game.Mode):
 
 ### RESET GAME/MODE ###
   def sw_startButton_active(self, sw):
-
+    nextTarget()
     return procgame.game.SwitchContinue
 
   def sw_lockMechLeft_active_for_1000ms(self, sw):
