@@ -31,11 +31,13 @@ class BasicMode(procgame.game.Mode):
       elif lamp.yaml_number == self.currentTarget:
         lamp.pulse()
     self.targetSwitches = switchYamls
+    print 'TARGET SWITCHES: ' + switchYamls
     self.currentTarget = lampYaml
     print 'TARGET: ' + lampYaml 
 
   def checkTarget(self, sw):
     if sw.yaml_number in self.targetSwitches:
+      print 'woot'
       self.nextTarget()  
     return
 
