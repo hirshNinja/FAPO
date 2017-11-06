@@ -20,7 +20,7 @@ class BasicMode(procgame.game.Mode):
     index = random.randrange(len(self.switchLampMap))
     lampYaml = self.switchLampMap.keys()[index]
     if lampYaml == self.currentTarget:
-      nextTarget()
+      self.nextTarget()
       return
     switchYamls = []
     for switch in self.switchLampMap[lampYaml]:
@@ -36,13 +36,13 @@ class BasicMode(procgame.game.Mode):
 
   def checkTarget(self, sw):
     if sw.yaml_number in self.targetSwitches:
-      nextTarget()  
+      self.nextTarget()  
     return
 
 
 ### RESET GAME/MODE ###
   def sw_startButton_active(self, sw):
-    nextTarget()
+    self.nextTarget()
     return procgame.game.SwitchContinue
 
   def sw_lockMechLeft_active_for_1000ms(self, sw):

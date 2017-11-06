@@ -55,11 +55,11 @@ class FapoGame(procgame.game.GameController):
     print self.lamps
     
   def addSwitchHandlers(self):
-    lampSwitches = self.basic_mode.switchLampMap.keys()
+    lampSwitches = self.basic_mode.switchLampMap.values()
     for sw in self.switches: 
       self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.midiHandler.fireMidiActive)
       self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=self.midiHandler.fireMidiInactive)
-      if sw.yaml_number in lampSwitches:
+      if any(sw.yaml_number in k for k in lampSwitches):
         self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.basic_mode.checkTarget)
         
   
