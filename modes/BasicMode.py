@@ -24,7 +24,7 @@ class BasicMode(procgame.game.Mode):
       return
     switchYamls = []
     for switch in self.switchLampMap[lampYaml]:
-      switchYamls.append('S' + str(switch))
+      switchYamls.append(switch)
     for lamp in self.game.lamps:
       if lamp.yaml_number == lampYaml:
         lamp.pulse(0)
