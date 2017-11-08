@@ -11,16 +11,23 @@ class AttractMode(procgame.game.Mode):
     self.delay = self.delay + time.time()
     self.game.coils.outhole.pulse()
     self.game.coils.tunnelKickbig.pulse()
+
+    self.game.midiHandler.midi_out.send_message([0x92, 1, 127])
+    self.game.alpha_display.display(["     PRESS      ", "     START      "])
+
     # derb
     return
 
 
-  def mode_tick(self):
-    if time.time() >= self.delay and not self.modeEnded:
-      self.modeEnded = True
-      self.game.nextMode()
-    return
+  # def mode_tick(self):
+  #   if time.time() >= self.delay and not self.modeEnded:
+  #     self.modeEnded = True
+  #     self.game.nextMode()
+  #   return
 
+  def sw_startButton_active(self, sw):
+    self.game.nextMode()
+    return procgame.game.SwitchContinue
 
   def mode_stopped(self):
     self.game.lampctrl.stop_show()

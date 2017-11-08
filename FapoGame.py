@@ -32,8 +32,8 @@ class FapoGame(procgame.game.GameController):
     self.modeSequence = []
     self.attract_mode = AttractMode.AttractMode(game=self)
     self.modeSequence.append(self.attract_mode)
-    self.idle_mode = IdleMode.IdleMode(game=self)
-    self.modeSequence.append(self.idle_mode)
+    # self.idle_mode = IdleMode.IdleMode(game=self)
+    # self.modeSequence.append(self.idle_mode)
     self.basic_mode = BasicMode.BasicMode(game=self)
     self.modeSequence.append(self.basic_mode)
     self.steps_mode = StepsMode.StepsMode(game=self)
@@ -101,6 +101,7 @@ class FapoGame(procgame.game.GameController):
 
   # def midi_start_game(self):
   def start_game(self):
+    self.game_started()
     self.start_ball()
     self.ball_start_time = time.time()
     self.add_player()
@@ -110,8 +111,8 @@ class FapoGame(procgame.game.GameController):
   def ballDrained(self):
     # Check to see if ball is in play to determine false positive
     if not self.trough_mode.num_balls_in_play:
-      # self.end_ball()
-      self.start_ball()
+      self.end_ball()
+      # self.start_ball()
       print "BALL DRAINED"
       if self.ball > 0:
         self.updateBallDisplay()
@@ -122,7 +123,8 @@ class FapoGame(procgame.game.GameController):
     self.basic_mode.delay(name=None, event_type=None, delay=5, handler=self.reset, param=None)
 
   def ball_starting(self):
-    self.midiHandler.fireMidiBallStarting()
+    # self.midiHandler.fireMidiBallStarting()
+    self.midi_ball_starting()
 
   def midi_ball_starting(self):
     self.lampctrl.play_show('start', repeat=True)

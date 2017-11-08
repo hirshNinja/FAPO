@@ -10,6 +10,9 @@ class BasicMode(procgame.game.Mode):
     self.targetSwitches = []
   
   def mode_started(self):
+    self.game.coils.rearPlayfield.pulse(0)
+    self.game.coils.centerBackglass.pulse(0)
+    self.game.coils.frontPlayfield.pulse(0)
     self.ballInMouth = False
     self.openCrazySteps = False
     self.game.start_game()
