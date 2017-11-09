@@ -21,6 +21,7 @@ class FapoGame(procgame.game.GameController):
     super(FapoGame, self).__init__(machine_type)
     self.ball_start_time = 0
     self.modeIndex = 0
+    self.balls_per_game = 5
     self.load_config('config/funhouse.yaml')
 
     ### ALPHANUMERIC DISPLAY ###
