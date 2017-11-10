@@ -20,19 +20,28 @@ class StepsMode(procgame.game.Mode):
 
 
   def sw_stepsLightFrenzy_active(self, sw):
-    self.targets[0].schedule(schedule=0xaaaaaa,
+    if self.target == self.targets[0]:
+      self.correctTargetHit()
+    else:
+      self.targets[0].schedule(schedule=0xaaaaaa,
         cycle_seconds=2, now=True)
     self.game.modes.remove(self)
     return procgame.game.SwitchStop
 
   def sw_stepsLightExtraBall_active(self, sw):
-    self.targets[1].schedule(schedule=0xaaaaaa,
+    if self.target == self.targets[1]:
+      self.correctTargetHit()
+    else:
+      self.targets[1].schedule(schedule=0xaaaaaa,
         cycle_seconds=2, now=True)
     self.game.modes.remove(self)
     return procgame.game.SwitchStop
 
   def sw_steps500000_active(self, sw):
-    self.targets[2].schedule(schedule=0xaaaaaa,
+    if self.target == self.targets[2]:
+      self.correctTargetHit()
+    else:
+      self.targets[2].schedule(schedule=0xaaaaaa,
         cycle_seconds=2, now=True)
     self.game.modes.remove(self)
     return procgame.game.SwitchStop
@@ -42,6 +51,11 @@ class StepsMode(procgame.game.Mode):
         cycle_seconds=2, now=True)
     self.game.modes.remove(self)
     return procgame.game.SwitchStop
+
+  def correctTargetHit(self):
+    self.game.lampctrl.stop_show()
+    self.game.lampctrl.play_show('attract', repeat=False)
+    return
 
   def sw_shooterL_active(self, sw):
     for mode in self.game.modes:

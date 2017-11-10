@@ -13,9 +13,7 @@ class BasicMode(procgame.game.Mode):
     self.targetSwitches = []
   
   def mode_started(self):
-    self.game.coils.rearPlayfield.pulse(0)
-    self.game.coils.centerBackglass.pulse(0)
-    self.game.coils.frontPlayfield.pulse(0)
+    self.game.lightsOn()
     self.game.coils.eyelidsOpen.pulse()
     self.ballInMouth = False
     self.openCrazySteps = False
@@ -73,6 +71,8 @@ class BasicMode(procgame.game.Mode):
   def sw_dummyJaw_active(self, sw):
     self.game.coils.dummyFlasher.schedule(schedule=0xaaaaaa, cycle_seconds=2, now=True)
     self.game.rudyMouthOpen()
+    self.delay(delay=10, handler=self.game.rudyMouthClose)
+    self.game.eyesWide()
     return procgame.game.SwitchContinue
 
   def sw_dummyJaw_inactive(self, sw):
@@ -81,15 +81,18 @@ class BasicMode(procgame.game.Mode):
       self.ballInMouth = False
 
   def sw_dummyEjectHole_active(self, sw):
+    self.game.lampctrl.stop_show()
     self.game.lampctrl.play_show('attract', repeat=False)
     return True
 
   def sw_dummyEjectHole_active_for_600ms(self, sw):
     self.ballInMouth = True
+    self.delay(delay=3, handler=self.game.lightsOn)
     self.game.coils.dummyEjectHole.pulse()
     return True
 
   def sw_trapDoor_active(self, sw):
+    self.game.lampctrl.stop_show()
     self.game.lampctrl.play_show('attract', repeat=False)
     self.game.trapDoorClose()
     return procgame.game.SwitchContinue
@@ -124,7 +127,7 @@ class BasicMode(procgame.game.Mode):
     return procgame.game.SwitchContinue
 
   def sw_windTunnelHole_active(self, sw):
-    self.game.coils.eyelidsOpen.pulse()
+    self.game.eyesWide()
     return True
 
   def sw_upperLeftJetBumper_active(self, sw):

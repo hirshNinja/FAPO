@@ -52,8 +52,6 @@ class FapoGame(procgame.game.GameController):
     self.lampctrl.register_show('attract', 'lamps/attract.lampshow')
     self.lampctrl.register_show('start', 'lamps/start.lampshow')
     self.lampctrl.register_show('trapdoorOpen', 'lamps/trapdoorOpen.lampshow')
-
-    print self.lamps
     
   def addSwitchHandlers(self):
     lampSwitches = self.basic_mode.switchLampMap.values()
@@ -62,6 +60,8 @@ class FapoGame(procgame.game.GameController):
     for sw in self.switches: 
       self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.midiHandler.fireMidiActive)
       self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=self.midiHandler.fireMidiInactive)
+      self.steps_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.midiHandler.fireMidiActive)
+      self.steps_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=self.midiHandler.fireMidiInactive)
       if any(sw.yaml_number in k for k in lampSwitches):
         self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.basic_mode.checkTarget)
       if sw.yaml_number in leftSwitches:
@@ -135,6 +135,7 @@ class FapoGame(procgame.game.GameController):
     self.midi_ball_starting()
 
   def midi_ball_starting(self):
+    self.lampctrl.stop_show()
     self.lampctrl.play_show('start', repeat=True)
     self.trough_mode.launch_balls(1)
 
@@ -146,15 +147,25 @@ class FapoGame(procgame.game.GameController):
     # General Illumination off?
     self.enable_flippers(enable=False)
 
+  def lightsOn(self):
+    self.coils.rearPlayfield.pulse(0)
+    self.coils.centerBackglass.pulse(0)
+    self.coils.frontPlayfield.pulse(0)
+
+  def lightsOff(self):
+    self.coils.rearPlayfield.pulse()
+    self.coils.centerBackglass.pulse()
+    self.coils.frontPlayfield.pulse()
+
   def crazyStepsOpen(self):
     self.coils.rampDiverter.schedule(schedule=0xffffffff,
     cycle_seconds=1, now=True)
     self.coils.stepsGate.schedule(schedule=0xffffffff,
-    cycle_seconds=4, now=True)
+    cycle_seconds=3, now=True)
     self.lamps.stepsOpen.schedule(schedule=0xffffffff,
-    cycle_seconds=4, now=True)
+    cycle_seconds=3, now=True)
     self.lamps.rampStepsLamp.schedule(schedule=0xffffffff,
-    cycle_seconds=4, now=True)
+    cycle_seconds=3, now=True)
 
   def crazyStepsClose(self):
     self.coils.rampDiverter.pulse(1)
@@ -176,6 +187,7 @@ class FapoGame(procgame.game.GameController):
       self.lamps.trapDoorBonus.schedule(schedule=0xffffffff,
     cycle_seconds=0, now=True)
       self.coils.trapDoorOpen.pulse()
+      self.lampctrl.stop_show()
       self.lampctrl.play_show('trapdoorOpen', repeat=True)
 
   def trapDoorClose(self):
@@ -190,6 +202,9 @@ class FapoGame(procgame.game.GameController):
   def eyesRight(self, sw):
     self.coils.eyesRight.pulse()
 
+  def eyesWide(self):
+    self.coils.eyelidsOpen.schedule(schedule=0xffffffff,
+    cycle_seconds=1, now=True)
 
 def run():
   game = FapoGame(pinproc.MachineTypeWPCAlphanumeric)
