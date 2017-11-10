@@ -66,6 +66,7 @@ class BasicMode(procgame.game.Mode):
 
   def sw_outhole_active_for_100ms(self, sw):
     self.game.coils.outhole.pulse()
+    self.game.rudyMouthClose()
     return procgame.game.SwitchContinue
 
   def sw_dummyJaw_active(self, sw):
