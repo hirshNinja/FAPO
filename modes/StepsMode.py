@@ -37,6 +37,10 @@ class StepsMode(procgame.game.Mode):
     self.game.modes.remove(self)
     return procgame.game.SwitchStop
 
+  def sw_leftOutlane_active(self,sw):
+    self.game.flippersOn()
+    return
+
   def sw_steps500000_active(self, sw):
     if self.target == self.targets[2]:
       self.correctTargetHit()
