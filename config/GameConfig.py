@@ -45,3 +45,6 @@ class GameConfig():
 
     }
 
+    self.leftSwitches = ['S17','S32','S33','S35','S37','S41','S42','S43','S48','S54','S56','S64']
+    self.rightSwitches = ['S31','S34','S38','S45','S52','S53','S57','S58','S61','S66','S67','S71','S75']
+

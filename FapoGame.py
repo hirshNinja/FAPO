@@ -57,11 +57,17 @@ class FapoGame(procgame.game.GameController):
     
   def addSwitchHandlers(self):
     lampSwitches = self.basic_mode.switchLampMap.values()
+    leftSwitches = self.basic_mode.leftSwitches
+    rightSwitches = self.basic_mode.rightSwitches
     for sw in self.switches: 
       self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.midiHandler.fireMidiActive)
       self.basic_mode.add_switch_handler(name=sw.name, event_type='inactive', delay=0, handler=self.midiHandler.fireMidiInactive)
       if any(sw.yaml_number in k for k in lampSwitches):
         self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0, handler=self.basic_mode.checkTarget)
+      if sw.yaml_number in leftSwitches:
+        self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0.01, handler=self.eyesLeft)
+      elif sw.yaml_number in rightSwitches:
+        self.basic_mode.add_switch_handler(name=sw.name, event_type='active', delay=0.01, handler=self.eyesRight)
         
   
   def tick(self):
@@ -121,6 +127,7 @@ class FapoGame(procgame.game.GameController):
   def game_ended(self):
     print "GAME OVER!"
     self.alpha_display.display(["      GAME      ", "      OVER      "])
+    self.coils.eyelidsClosed.pulse()
     self.basic_mode.delay(name=None, event_type=None, delay=5, handler=self.reset, param=None)
 
   def ball_starting(self):
@@ -156,6 +163,7 @@ class FapoGame(procgame.game.GameController):
     self.lamps.rampStepsLamp.pulse()
 
   def rudyMouthOpen(self):
+    self.coils.eyelidsOpen.pulse()
     self.coils.upDownDriver.enable()
     self.coils.mouthMotor.pulse()
 
@@ -170,14 +178,18 @@ class FapoGame(procgame.game.GameController):
       self.coils.trapDoorOpen.pulse()
       self.lampctrl.play_show('trapdoorOpen', repeat=True)
 
-
   def trapDoorClose(self):
     if not self.switches.trapDoorClosed.state:
       self.lamps.trapDoorBonus.pulse()
       self.coils.trapDoorClose.pulse()
       self.lampctrl.stop_show()
 
-  
+  def eyesLeft(self, sw):
+    self.coils.eyesLeft.pulse()
+
+  def eyesRight(self, sw):
+    self.coils.eyesRight.pulse()
+
 
 def run():
   game = FapoGame(pinproc.MachineTypeWPCAlphanumeric)

@@ -5,7 +5,10 @@ import random
 class BasicMode(procgame.game.Mode):
   def __init__(self, game):
     super(BasicMode, self).__init__(game=game, priority=5)
-    self.switchLampMap = GameConfig.GameConfig().switchLampMap
+    self.gameConfig = GameConfig.GameConfig()
+    self.switchLampMap = self.gameConfig.switchLampMap
+    self.leftSwitches = self.gameConfig.leftSwitches
+    self.rightSwitches = self.gameConfig.rightSwitches
     self.currentTarget = ''
     self.targetSwitches = []
   
@@ -13,6 +16,7 @@ class BasicMode(procgame.game.Mode):
     self.game.coils.rearPlayfield.pulse(0)
     self.game.coils.centerBackglass.pulse(0)
     self.game.coils.frontPlayfield.pulse(0)
+    self.game.coils.eyelidsOpen.pulse()
     self.ballInMouth = False
     self.openCrazySteps = False
     self.game.start_game()
@@ -118,6 +122,10 @@ class BasicMode(procgame.game.Mode):
       print mode
     self.game.modes.add(self.game.steps_mode)
     return procgame.game.SwitchContinue
+
+  def sw_windTunnelHole_active(self, sw):
+    self.game.coils.eyelidsOpen.pulse()
+    return True
 
   def sw_upperLeftJetBumper_active(self, sw):
     self.game.lamps.upperLeftJetBumper.pulsed_patter(on_time=50, off_time=50, run_time=255, now=True)
